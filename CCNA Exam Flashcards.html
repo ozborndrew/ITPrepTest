@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCNA Exam Flashcards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        header {
+            background: #0066cc;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: #004d99;
+            padding: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .flashcard {
+            padding: 30px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #0066cc;
+        }
+        
+        .options {
+            display: grid;
+            grid-gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            background: #f1f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #cce5ff;
+        }
+        
+        .option:hover {
+            background: #e6f2ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected {
+            background: #b3d9ff;
+            border-color: #0066cc;
+        }
+        
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        #prev-btn {
+            background: #6c757d;
+            color: white;
+        }
+        
+        #prev-btn:hover:not(:disabled) {
+            background: #5a6268;
+        }
+        
+        #next-btn {
+            background: #0066cc;
+            color: white;
+        }
+        
+        #next-btn:hover:not(:disabled) {
+            background: #0056b3;
+        }
+        
+        #submit-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        #submit-btn:hover {
+            background: #218838;
+        }
+        
+        #restart-btn {
+            background: #fd7e14;
+            color: white;
+        }
+        
+        #restart-btn:hover {
+            background: #e66a0a;
+        }
+        
+        #print-btn {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        #print-btn:hover {
+            background: #5a2d9c;
+        }
+        
+        #next-set-btn {
+            background: #20c997;
+            color: white;
+        }
+        
+        #next-set-btn:hover {
+            background: #199d76;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        
+        .score-display {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #0066cc;
+        }
+        
+        .pass {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .fail {
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #0066cc;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .question-number {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .set-indicator {
+            margin-top: 10px;
+            font-weight: 600;
+            color: #cce5ff;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                margin: 0;
+            }
+            .navigation, .result-actions, header {
+                display: none !important;
+            }
+            .result {
+                display: block !important;
+                padding: 0;
+            }
+            .explanation {
+                border: 1px solid #ddd;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .result-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CCNA Exam Flashcards</h1>
+            <p class="description">Test your knowledge with CCNA exam questions. Score 80% or higher to pass!</p>
+            <div class="stats">
+                <div class="score">Score: <span id="current-score">0</span>/250</div>
+                <div class="progress-text">Question <span id="current">1</span> of <span id="total">25</span></div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="set-indicator">Set <span id="set-number">1</span> of 2</div>
+        </header>
+        
+        <div class="flashcard" id="flashcard">
+            <div class="question-number">Question <span id="q-num">1</span>:</div>
+            <div class="question" id="question">Loading question...</div>
+            <div class="options" id="options">
+                <div class="option" data-value="A">A) </div>
+                <div class="option" data-value="B">B) </div>
+                <div class="option" data-value="C">C) </div>
+                <div class="option" data-value="D">D) </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button id="prev-btn" disabled>Previous</button>
+            <button id="next-btn">Next Question</button>
+            <button id="submit-btn" style="display: none;">Submit Answers</button>
+        </div>
+    </div>
+    
+    <div class="container result" id="result-container">
+        <h2>Exam Results</h2>
+        <div class="score-display">Your score: <span id="final-score">0</span>/250 (<span id="percentage">0</span>%)</div>
+        <div id="pass-fail-message" class="pass">Congratulations! You passed!</div>
+        <div class="explanation">
+            <h3>Question Review:</h3>
+            <div id="review-content"></div>
+        </div>
+        <div class="result-actions">
+            <button id="next-set-btn">Next Question Set</button>
+            <button id="restart-btn">Restart This Set</button>
+            <button id="print-btn">Print Results</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Questions data - 50 CCNA questions
+            const allQuestions = [
+                {
+                    question: "At which OSI layer does a network switch operate, assuming it is making forwarding decisions based solely on MAC addresses?",
+                    options: [
+                        "A) Physical (Layer 1)",
+                        "B) Data Link (Layer 2)",
+                        "C) Network (Layer 3)",
+                        "D) Transport (Layer 4)"
+                    ],
+                    correct: "B",
+                    explanation: "A traditional switch makes forwarding decisions based on MAC addresses, which are a Layer 2 identifier.",
+                    points: 10
+                },
+                {
+                    question: "What is the primary purpose of the Address Resolution Protocol (ARP)?",
+                    options: [
+                        "A) To map a known IP address to a MAC address",
+                        "B) To map a known MAC address to an IP address",
+                        "C) To map a known hostname to an IP address",
+                        "D) To map a known IP address to a hostname"
+                    ],
+                    correct: "A",
+                    explanation: "ARP resolves the Layer 3 address (IP) to a Layer 2 address (MAC) so a frame can be built and delivered on the local network segment.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used by a client to dynamically receive an IP address, subnet mask, and default gateway?",
+                    options: [
+                        "A) DNS",
+                        "B) ARP",
+                        "C) DHCP",
+                        "D) SNMP"
+                    ],
+                    correct: "C",
+                    explanation: "The Dynamic Host Configuration Protocol (DHCP) is used to automatically assign IP configuration parameters to clients.",
+                    points: 10
+                },
+                {
+                    question: "What is the administrative distance (AD) of OSPF?",
+                    options: [
+                        "A) 90",
+                        "B) 100",
+                        "C) 110",
+                        "D) 120"
+                    ],
+                    correct: "C",
+                    explanation: "The default administrative distance for OSPF is 110. (Connected=0, Static=1, EIGRP Summary=5, eBGP=20, EIGRP Internal=90, OSPF=110, IS-IS=115, RIP=120).",
+                    points: 10
+                },
+                {
+                    question: "Which spanning-tree protocol provides a separate instance for each VLAN, allowing for load balancing?",
+                    options: [
+                        "A) Rapid PVST+",
+                        "B) STP",
+                        "C) RSTP",
+                        "D) MSTP"
+                    ],
+                    correct: "A",
+                    explanation: "Per-VLAN Spanning Tree Plus (PVST+) and its rapid version, Rapid PVST+, create a spanning tree instance for each VLAN, enabling load balancing by having different root bridges for different VLANs.",
+                    points: 10
+                },
+                {
+                    question: "A network administrator needs to create a subnet that supports 14 usable host addresses. What is the correct subnet mask in dotted-decimal notation?",
+                    options: [
+                        "A) 255.255.255.0",
+                        "B) 255.255.255.224",
+                        "C) 255.255.255.240",
+                        "D) 255.255.255.248"
+                    ],
+                    correct: "C",
+                    explanation: "A subnet mask of 255.255.255.240 (/28) provides 16 total addresses, 14 of which are usable for hosts (16 - 2 network/broadcast = 14). 255.255.255.248 would only provide 6 usable hosts.",
+                    points: 10
+                },
+                {
+                    question: "Which type of ACL (numbered) would you use to filter traffic based on source and destination IP address and protocol?",
+                    options: [
+                        "A) A standard IP ACL (1-99)",
+                        "B) An extended IP ACL (100-199)",
+                        "C) A named ACL",
+                        "D) An IPv6 ACL"
+                    ],
+                    correct: "B",
+                    explanation: "Extended ACLs (100-199) can filter based on source/destination IP, protocol (IP, TCP, UDP, ICMP), and port numbers. Standard ACLs (1-99) only filter based on source IP.",
+                    points: 10
+                },
+                {
+                    question: "What is the first step in the NAT process for an outbound packet?",
+                    options: [
+                        "A) The inside global address is translated to an inside local address.",
+                        "B) The inside local address is translated to an inside global address.",
+                        "C) The router checks the routing table.",
+                        "D) The router checks the ACL to see if the packet is permitted."
+                    ],
+                    correct: "D",
+                    explanation: "For NAT to occur, the packet must first be matched against the NAT ACL to determine if it is eligible for translation. The order is: 1) Check NAT ACL, 2) Check Routing Table, 3) Translate inside local to inside global.",
+                    points: 10
+                },
+                {
+                    question: "Which Cisco IOS command is used to enter the interface configuration mode for GigabitEthernet 0/1?",
+                    options: [
+                        "A) enable GigabitEthernet 0/1",
+                        "B) configure terminal GigabitEthernet 0/1",
+                        "C) interface GigabitEthernet 0/1",
+                        "D) config interface GigabitEthernet 0/1"
+                    ],
+                    correct: "C",
+                    explanation: "This is the standard command from global configuration mode to enter interface configuration mode for a specific interface.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is a link-state routing protocol that uses cost as its metric and areas to create a hierarchical network design?",
+                    options: [
+                        "A) EIGRP",
+                        "B) BGP",
+                        "C) OSPF",
+                        "D) RIP"
+                    ],
+                    correct: "C",
+                    explanation: "Open Shortest Path First (OSPF) is a link-state protocol that uses cost (derived from bandwidth) as its metric and uses areas to scale to large network sizes.",
+                    points: 10
+                },
+                {
+                    question: "What is the default administrative distance of a directly connected network?",
+                    options: [
+                        "A) 0",
+                        "B) 1",
+                        "C) 90",
+                        "D) 110"
+                    ],
+                    correct: "A",
+                    explanation: "Directly connected networks have an administrative distance of 0, which is the most trusted value.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol uses TCP port 23?",
+                    options: [
+                        "A) SSH",
+                        "B) Telnet",
+                        "C) FTP",
+                        "D) SMTP"
+                    ],
+                    correct: "B",
+                    explanation: "Telnet uses TCP port 23. SSH uses port 22, FTP uses ports 20 and 21, and SMTP uses port 25.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of a default route?",
+                    options: [
+                        "A) To provide a path for packets when there is no specific route in the routing table",
+                        "B) To route packets to all connected networks",
+                        "C) To serve as the primary route for all traffic",
+                        "D) To filter unwanted traffic"
+                    ],
+                    correct: "A",
+                    explanation: "A default route is used when there is no specific route to a destination network in the routing table.",
+                    points: 10
+                },
+                {
+                    question: "Which command shows the MAC address table on a Cisco switch?",
+                    options: [
+                        "A) show mac-address-table",
+                        "B) show mac table",
+                        "C) show mac address-table",
+                        "D) show mac-address table"
+                    ],
+                    correct: "C",
+                    explanation: "The command 'show mac address-table' displays the MAC address table on a Cisco switch.",
+                    points: 10
+                },
+                {
+                    question: "What does VLAN stand for?",
+                    options: [
+                        "A) Virtual Local Area Network",
+                        "B) Variable Length Access Node",
+                        "C) Verified Logical Access Network",
+                        "D) Virtualized Layer 2 Access Network"
+                    ],
+                    correct: "A",
+                    explanation: "VLAN stands for Virtual Local Area Network, which allows network segmentation at the data link layer.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used to prevent loops in a switched network?",
+                    options: [
+                        "A) VTP",
+                        "B) STP",
+                        "C) DTP",
+                        "D) EIGRP"
+                    ],
+                    correct: "B",
+                    explanation: "Spanning Tree Protocol (STP) is used to prevent layer 2 loops in switched networks.",
+                    points: 10
+                },
+                {
+                    question: "What is the CIDR notation for a subnet mask of 255.255.255.192?",
+                    options: [
+                        "A) /24",
+                        "B) /25",
+                        "C) /26",
+                        "D) /27"
+                    ],
+                    correct: "C",
+                    explanation: "255.255.255.192 in binary is 11111111.11111111.11111111.11000000, which has 26 network bits, so the CIDR notation is /26.",
+                    points: 10
+                },
+                {
+                    question: "Which layer of the OSI model is responsible for logical addressing?",
+                    options: [
+                        "A) Physical",
+                        "B) Data Link",
+                        "C) Network",
+                        "D) Transport"
+                    ],
+                    correct: "C",
+                    explanation: "The Network layer (Layer 3) is responsible for logical addressing, such as IP addresses.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'show cdp neighbors' command?",
+                    options: [
+                        "A) To display information about directly connected Cisco devices",
+                        "B) To show all neighboring networks",
+                        "C) To display CD-ROM drive information",
+                        "D) To show CPU and memory usage"
+                    ],
+                    correct: "A",
+                    explanation: "The 'show cdp neighbors' command displays information about directly connected Cisco devices, including device ID, local interface, and capabilities.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used to automatically assign IP addresses to network devices?",
+                    options: [
+                        "A) DNS",
+                        "B) ARP",
+                        "C) DHCP",
+                        "D) FTP"
+                    ],
+                    correct: "C",
+                    explanation: "Dynamic Host Configuration Protocol (DHCP) is used to automatically assign IP addresses to network devices.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the TCP three-way handshake?",
+                    options: [
+                        "A) To establish a secure connection",
+                        "B) To synchronize sequence numbers between devices",
+                        "C) To encrypt data transmission",
+                        "D) To compress data for faster transfer"
+                    ],
+                    correct: "B",
+                    explanation: "The TCP three-way handshake (SYN, SYN-ACK, ACK) is used to synchronize sequence numbers and establish a connection between two devices.",
+                    points: 10
+                },
+                {
+                    question: "Which command is used to test network connectivity between two devices?",
+                    options: [
+                        "A) tracert",
+                        "B) ipconfig",
+                        "C) ping",
+                        "D) nslookup"
+                    ],
+                    correct: "C",
+                    explanation: "The ping command is used to test connectivity between two devices by sending ICMP echo requests and waiting for replies.",
+                    points: 10
+                },
+                {
+                    question: "What is the function of a default gateway?",
+                    options: [
+                        "A) To connect different VLANs",
+                        "B) To provide a way for devices to communicate with devices on other networks",
+                        "C) To filter incoming traffic",
+                        "D) To assign IP addresses to devices"
+                    ],
+                    correct: "B",
+                    explanation: "A default gateway provides a way for devices to communicate with devices on other networks by forwarding traffic to the appropriate router.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used for secure remote access to network devices?",
+                    options: [
+                        "A) Telnet",
+                        "B) FTP",
+                        "C) SSH",
+                        "D) HTTP"
+                    ],
+                    correct: "C",
+                    explanation: "SSH (Secure Shell) is used for secure remote access to network devices, providing encrypted communication.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of NAT (Network Address Translation)?",
+                    options: [
+                        "A) To translate between MAC addresses and IP addresses",
+                        "B) To translate between private and public IP addresses",
+                        "C) To translate between IPv4 and IPv6 addresses",
+                        "D) To translate between domain names and IP addresses"
+                    ],
+                    correct: "B",
+                    explanation: "NAT translates private IP addresses to public IP addresses, allowing multiple devices to share a single public IP.",
+                    points: 10
+                },
+                {
+                    question: "Which routing protocol uses bandwidth and delay as its metric by default?",
+                    options: [
+                        "A) OSPF",
+                        "B) RIP",
+                        "C) EIGRP",
+                        "D) BGP"
+                    ],
+                    correct: "C",
+                    explanation: "EIGRP uses bandwidth and delay as part of its composite metric calculation by default.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of ACLs (Access Control Lists)?",
+                    options: [
+                        "A) To control access to network resources based on rules",
+                        "B) To control the flow of traffic between networks",
+                        "C) To prevent unauthorized access to network devices",
+                        "D) All of the above"
+                    ],
+                    correct: "D",
+                    explanation: "ACLs are used to control access to network resources, control traffic flow, and prevent unauthorized access.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used for automatically discovering network devices?",
+                    options: [
+                        "A) DNS",
+                        "B) DHCP",
+                        "C) CDP",
+                        "D) SNMP"
+                    ],
+                    correct: "C",
+                    explanation: "CDP (Cisco Discovery Protocol) is used for automatically discovering Cisco devices on the network.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of VTP (VLAN Trunking Protocol)?",
+                    options: [
+                        "A) To trunk multiple VLANs over a single link",
+                        "B) To synchronize VLAN information across switches",
+                        "C) To provide security for VLAN traffic",
+                        "D) To route between VLANs"
+                    ],
+                    correct: "B",
+                    explanation: "VTP is used to synchronize VLAN information across multiple switches in a network.",
+                    points: 10
+                },
+                {
+                    question: "Which of the following is a classless routing protocol?",
+                    options: [
+                        "A) RIPv1",
+                        "B) IGRP",
+                        "C) EIGRP",
+                        "D) BGP"
+                    ],
+                    correct: "C",
+                    explanation: "EIGRP is a classless routing protocol that supports VLSM and CIDR.",
+                    points: 10
+                },
+                {
+                    question: "What is the default subnet mask for a Class B network?",
+                    options: [
+                        "A) 255.0.0.0",
+                        "B) 255.255.0.0",
+                        "C) 255.255.255.0",
+                        "D) 255.255.255.255"
+                    ],
+                    correct: "B",
+                    explanation: "The default subnet mask for a Class B network is 255.255.0.0.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol operates at the transport layer of the OSI model?",
+                    options: [
+                        "A) IP",
+                        "B) TCP",
+                        "C) ARP",
+                        "D) ICMP"
+                    ],
+                    correct: "B",
+                    explanation: "TCP (Transmission Control Protocol) operates at the transport layer (Layer 4) of the OSI model.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of a loopback interface?",
+                    options: [
+                        "A) To prevent routing loops",
+                        "B) To provide a stable router ID for routing protocols",
+                        "C) To connect to loopback networks",
+                        "D) To test physical cables"
+                    ],
+                    correct: "B",
+                    explanation: "A loopback interface provides a stable router ID for routing protocols and is always up.",
+                    points: 10
+                },
+                {
+                    question: "Which command would you use to view the routing table?",
+                    options: [
+                        "A) show ip route",
+                        "B) show route",
+                        "C) display ip routing",
+                        "D) show routing table"
+                    ],
+                    correct: "A",
+                    explanation: "The 'show ip route' command displays the IP routing table on a Cisco router.",
+                    points: 10
+                },
+                {
+                    question: "What does the term 'convergence' mean in networking?",
+                    options: [
+                        "A) The process of combining multiple networks into one",
+                        "B) The time it takes for routers to update their routing tables after a topology change",
+                        "C) The process of converting analog signals to digital",
+                        "D) The combination of voice, video, and data on a network"
+                    ],
+                    correct: "B",
+                    explanation: "Convergence is the time it takes for routers to update their routing tables after a topology change.",
+                    points: 10
+                },
+                {
+                    question: "Which of the following is a distance-vector routing protocol?",
+                    options: [
+                        "A) OSPF",
+                        "B) IS-IS",
+                        "C) RIP",
+                        "D) BGP"
+                    ],
+                    correct: "C",
+                    explanation: "RIP (Routing Information Protocol) is a distance-vector routing protocol.",
+                    points: 10
+                },
+                {
+                    question: "What is the maximum number of hosts in a /24 network?",
+                    options: [
+                        "A) 254",
+                        "B) 255",
+                        "C) 256",
+                        "D) 512"
+                    ],
+                    correct: "A",
+                    explanation: "A /24 network has 256 total addresses, with 254 usable for hosts (excluding network and broadcast addresses).",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used for error reporting and diagnostics?",
+                    options: [
+                        "A) TCP",
+                        "B) UDP",
+                        "C) ICMP",
+                        "D) ARP"
+                    ],
+                    correct: "C",
+                    explanation: "ICMP (Internet Control Message Protocol) is used for error reporting and diagnostics, such as with ping and traceroute.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'ip default-gateway' command?",
+                    options: [
+                        "A) To set the default gateway for a router",
+                        "B) To set the default gateway for a switch",
+                        "C) To set the default route for a network",
+                        "D) To configure a default static route"
+                    ],
+                    correct: "B",
+                    explanation: "The 'ip default-gateway' command is used on switches to set the default gateway for management purposes.",
+                    points: 10
+                },
+                {
+                    question: "Which of the following is a connection-oriented protocol?",
+                    options: [
+                        "A) UDP",
+                        "B) IP",
+                        "C) TCP",
+                        "D) ICMP"
+                    ],
+                    correct: "C",
+                    explanation: "TCP is a connection-oriented protocol that establishes a connection before transmitting data.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'service password-encryption' command?",
+                    options: [
+                        "A) To encrypt all passwords in the configuration",
+                        "B) To enable encryption for user data",
+                        "C) To encrypt routing updates",
+                        "D) To enable SSH encryption"
+                    ],
+                    correct: "A",
+                    explanation: "The 'service password-encryption' command encrypts all plaintext passwords in the configuration.",
+                    points: 10
+                },
+                {
+                    question: "Which command is used to back up the running configuration to a TFTP server?",
+                    options: [
+                        "A) copy running-config tftp",
+                        "B) backup running-config tftp",
+                        "C) save running-config tftp",
+                        "D) export running-config tftp"
+                    ],
+                    correct: "A",
+                    explanation: "The 'copy running-config tftp' command is used to back up the running configuration to a TFTP server.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'ip helper-address' command?",
+                    options: [
+                        "A) To assist in IP address configuration",
+                        "B) To forward DHCP broadcasts to a DHCP server",
+                        "C) To help with IP routing",
+                        "D) To configure a helper IP for NAT"
+                    ],
+                    correct: "B",
+                    explanation: "The 'ip helper-address' command is used to forward DHCP broadcasts to a DHCP server on a different network.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used for secure web browsing?",
+                    options: [
+                        "A) HTTP",
+                        "B) FTP",
+                        "C) HTTPS",
+                        "D) Telnet"
+                    ],
+                    correct: "C",
+                    explanation: "HTTPS (HTTP Secure) is used for secure web browsing with encryption.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'show interfaces' command?",
+                    options: [
+                        "A) To display interface status and statistics",
+                        "B) To show IP interfaces",
+                        "C) To configure interfaces",
+                        "D) To test interface connectivity"
+                    ],
+                    correct: "A",
+                    explanation: "The 'show interfaces' command displays the status and statistics of all interfaces.",
+                    points: 10
+                },
+                {
+                    question: "Which of the following is a private IP address range?",
+                    options: [
+                        "A) 192.168.1.1",
+                        "B) 8.8.8.8",
+                        "C) 200.100.50.25",
+                        "D) 172.32.0.1"
+                    ],
+                    correct: "A",
+                    explanation: "192.168.x.x is one of the private IP address ranges defined in RFC 1918.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'debug' command?",
+                    options: [
+                        "A) To fix errors in the configuration",
+                        "B) To troubleshoot and monitor real-time events",
+                        "C) To remove viruses from the router",
+                        "D) To test network connectivity"
+                    ],
+                    correct: "B",
+                    explanation: "The 'debug' command is used for troubleshooting and monitoring real-time events on a Cisco device.",
+                    points: 10
+                },
+                {
+                    question: "Which command is used to assign an IP address to an interface?",
+                    options: [
+                        "A) ip address 192.168.1.1 255.255.255.0",
+                        "B) set ip address 192.168.1.1 255.255.255.0",
+                        "C) interface ip 192.168.1.1 255.255.255.0",
+                        "D) address ip 192.168.1.1 255.255.255.0"
+                    ],
+                    correct: "A",
+                    explanation: "The 'ip address' command is used in interface configuration mode to assign an IP address to an interface.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'show version' command?",
+                    options: [
+                        "A) To display the iOS version",
+                        "B) To show the hardware and software information",
+                        "C) To check the version of the configuration",
+                        "D) To display the routing protocol version"
+                    ],
+                    correct: "B",
+                    explanation: "The 'show version' command displays information about the device's hardware and software, including the iOS version, memory, and configuration register.",
+                    points: 10
+                },
+                {
+                    question: "Which protocol is used for transferring files between systems?",
+                    options: [
+                        "A) HTTP",
+                        "B) FTP",
+                        "C) SMTP",
+                        "D) SNMP"
+                    ],
+                    correct: "B",
+                    explanation: "FTP (File Transfer Protocol) is used for transferring files between systems.",
+                    points: 10
+                },
+                {
+                    question: "What is the purpose of the 'copy running-config startup-config' command?",
+                    options: [
+                        "A) To back up the configuration",
+                        "B) To save the current configuration to NVRAM",
+                        "C) To copy the configuration to a TFTP server",
+                        "D) To restore the configuration from NVRAM"
+                    ],
+                    correct: "B",
+                    explanation: "The 'copy running-config startup-config' command saves the current running configuration to NVRAM so it persists after reboot.",
+                    points: 10
+                }
+            ];
+
+            // DOM elements
+            const questionEl = document.getElementById('question');
+            const optionsEl = document.getElementById('options');
+            const qNumEl = document.getElementById('q-num');
+            const currentEl = document.getElementById('current');
+            const totalEl = document.getElementById('total');
+            const currentScoreEl = document.getElementById('current-score');
+            const progressEl = document.getElementById('progress');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const resultContainer = document.getElementById('result-container');
+            const finalScoreEl = document.getElementById('final-score');
+            const percentageEl = document.getElementById('percentage');
+            const passFailMessage = document.getElementById('pass-fail-message');
+            const reviewContent = document.getElementById('review-content');
+            const restartBtn = document.getElementById('restart-btn');
+            const printBtn = document.getElementById('print-btn');
+            const nextSetBtn = document.getElementById('next-set-btn');
+            const setNumberEl = document.getElementById('set-number');
+
+            // Quiz state
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let userAnswers = [];
+            let quizCompleted = false;
+            let currentSet = 1;
+            let currentQuestions = [];
+            let usedQuestionIndices = new Set();
+
+            // Initialize quiz
+            initializeSet();
+            loadQuestion();
+
+            // Event listeners
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            submitBtn.addEventListener('click', showResults);
+            restartBtn.addEventListener('click', restartQuiz);
+            printBtn.addEventListener('click', printResults);
+            nextSetBtn.addEventListener('click', loadNextSet);
+
+            // Initialize question set
+            function initializeSet() {
+                // Reset for new set
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = [];
+                quizCompleted = false;
+                usedQuestionIndices.clear();
+                
+                // Select 25 random questions from the pool
+                currentQuestions = [];
+                const questionPool = [...allQuestions];
+                
+                while (currentQuestions.length < 25 && questionPool.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * questionPool.length);
+                    currentQuestions.push(questionPool[randomIndex]);
+                    questionPool.splice(randomIndex, 1);
+                }
+                
+                // Update UI
+                totalEl.textContent = currentQuestions.length;
+                currentScoreEl.textContent = '0';
+                progressEl.style.width = '0%';
+                setNumberEl.textContent = currentSet;
+            }
+
+            // Load question function
+            function loadQuestion() {
+                const question = currentQuestions[currentQuestionIndex];
+                qNumEl.textContent = currentQuestionIndex + 1;
+                currentEl.textContent = currentQuestionIndex + 1;
+                questionEl.textContent = question.question;
+                
+                // Update progress bar
+                progressEl.style.width = `${((currentQuestionIndex + 1) / currentQuestions.length) * 100}%`;
+                
+                // Clear options
+                optionsEl.innerHTML = '';
+                
+                // Add options
+                question.options.forEach(option => {
+                    const optionEl = document.createElement('div');
+                    optionEl.className = 'option';
+                    if (userAnswers[currentQuestionIndex] === option.charAt(0)) {
+                        optionEl.classList.add('selected');
+                    }
+                    optionEl.textContent = option;
+                    optionEl.setAttribute('data-value', option.charAt(0));
+                    optionEl.addEventListener('click', selectOption);
+                    optionsEl.appendChild(optionEl);
+                });
+                
+                // Update navigation buttons
+                prevBtn.disabled = currentQuestionIndex === 0;
+                
+                if (currentQuestionIndex === currentQuestions.length - 1) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+                
+                updateScoreDisplay();
+            }
+
+            // Select option function
+            function selectOption() {
+                if (quizCompleted) return;
+                
+                const selectedValue = this.getAttribute('data-value');
+                userAnswers[currentQuestionIndex] = selectedValue;
+                
+                // Update UI
+                const options = optionsEl.querySelectorAll('.option');
+                options.forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.getAttribute('data-value') === selectedValue) {
+                        option.classList.add('selected');
+                    }
+                });
+            }
+
+            // Navigation functions
+            function goToPreviousQuestion() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    loadQuestion();
+                }
+            }
+
+            function goToNextQuestion() {
+                if (currentQuestionIndex < currentQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                }
+            }
+
+            // Update score display
+            function updateScoreDisplay() {
+                let calculatedScore = 0;
+                userAnswers.forEach((answer, index) => {
+                    if (answer === currentQuestions[index].correct) {
+                        calculatedScore += currentQuestions[index].points;
+                    }
+                });
+                score = calculatedScore;
+                currentScoreEl.textContent = score;
+            }
+
+            // Show results function
+            function showResults() {
+                quizCompleted = true;
+                updateScoreDisplay();
+                
+                const percentage = (score / (currentQuestions.length * 10)) * 100;
+                finalScoreEl.textContent = score;
+                percentageEl.textContent = percentage.toFixed(1);
+                
+                if (percentage >= 80) {
+                    passFailMessage.className = 'pass';
+                    passFailMessage.textContent = 'Congratulations! You passed!';
+                } else {
+                    passFailMessage.className = 'fail';
+                    passFailMessage.textContent = 'Keep studying. You need 80% to pass.';
+                }
+                
+                // Show/hide next set button based on current set
+                if (currentSet < 2) {
+                    nextSetBtn.style.display = 'block';
+                } else {
+                    nextSetBtn.style.display = 'none';
+                }
+                
+                // Build review content
+                reviewContent.innerHTML = '';
+                currentQuestions.forEach((question, index) => {
+                    const isCorrect = userAnswers[index] === question.correct;
+                    const questionReview = document.createElement('div');
+                    questionReview.className = 'question-review';
+                    questionReview.innerHTML = `
+                        <p><strong>Question ${index + 1}:</strong> ${question.question}</p>
+                        <p class="${isCorrect ? 'pass' : 'fail'}"><strong>Your answer:</strong> ${userAnswers[index] ? userAnswers[index] : 'Not answered'} ${isCorrect ? '✓' : '✗'}</p>
+                        <p><strong>Correct answer:</strong> ${question.correct}</p>
+                        <p><strong>Explanation:</strong> ${question.explanation}</p>
+                        <hr>
+                    `;
+                    reviewContent.appendChild(questionReview);
+                });
+                
+                // Hide quiz, show results
+                document.querySelector('.flashcard').style.display = 'none';
+                document.querySelector('.navigation').style.display = 'none';
+                resultContainer.style.display = 'block';
+            }
+
+            // Restart quiz
+            function restartQuiz() {
+                initializeSet();
+                
+                // Show quiz, hide results
+                document.querySelector('.flashcard').style.display = 'block';
+                document.querySelector('.navigation').style.display = 'flex';
+                resultContainer.style.display = 'none';
+                
+                // Load the first question
+                loadQuestion();
+            }
+
+            // Load next set
+            function loadNextSet() {
+                currentSet++;
+                initializeSet();
+                
+                // Show quiz, hide results
+                document.querySelector('.flashcard').style.display = 'block';
+                document.querySelector('.navigation').style.display = 'flex';
+                resultContainer.style.display = 'none';
+                
+                // Load the first question
+                loadQuestion();
+            }
+
+            // Print results
+            function printResults() {
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>
