@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompTIA Security+ Interactive Flashcards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            color: #b21f1f;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #1a2a6c;
+            margin: 20px 0 15px;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #1a2a6c;
+        }
+        
+        .btn {
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: #b21f1f;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .question-set {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .question-card {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a2a6c;
+        }
+        
+        .options {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .option {
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .selected {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+        
+        .correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+        
+        .incorrect {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .results {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #1a2a6c;
+        }
+        
+        .passed {
+            color: #28a745;
+        }
+        
+        .failed {
+            color: #dc3545;
+        }
+        
+        .review-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+        
+        .review-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 8px;
+            border-left: 4px solid #1a2a6c;
+        }
+        
+        .print-btn {
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #1a2a6c;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-count {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CompTIA Security+ Interactive Flashcards</h1>
+            <h2>Test your knowledge with exam-style questions</h2>
+        </header>
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p>Select a question set to begin (20 questions each)</p>
+            <p>Answer all questions in the set</p>
+            <p>You need a score of 80% or higher to pass</p>
+            <p>Click on your answer choice to select it</p>
+            <p>Use the navigation buttons to move between questions</p>
+            <p>Submit your answers when you've completed all questions</p>
+            <p>Review your results and print them for future reference</p>
+        </div>
+        
+        <div id="set-selection">
+            <h3>Select a Question Set</h3>
+            <div class="question-set">
+                <button class="btn" onclick="selectSet(1)">Set 1: Threats, Attacks & Vulnerabilities</button>
+                <button class="btn" onclick="selectSet(2)">Set 2: Architecture & Design</button>
+                <button class="btn" onclick="selectSet(3)">Set 3: Implementation</button>
+            </div>
+        </div>
+        
+        <div id="quiz-container" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="question-count" id="question-count">Question 1 of 20</div>
+            
+            <div class="question-card active">
+                <div class="question-text" id="question-text"></div>
+                <ul class="options" id="options"></ul>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn btn-secondary" id="prev-btn" onclick="navigate(-1)">Previous</button>
+                <button class="btn" id="next-btn" onclick="navigate(1)">Next</button>
+                <button class="btn btn-success" id="submit-btn" style="display: none;" onclick="submitQuiz()">Submit Answers</button>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Your Results</h2>
+            <div class="score" id="score"></div>
+            <p id="pass-fail"></p>
+            <div class="review-list" id="review-list"></div>
+            <button class="btn print-btn" onclick="window.print()">Print Results</button>
+            <button class="btn" onclick="resetQuiz()">Try Another Set</button>
+        </div>
+    </div>
+
+    <script>
+        // Question data for three sets with explanations
+        const questionSets = {
+            1: [
+                {
+                    question: "Which of the following is a type of social engineering attack?",
+                    options: ["A. DDoS", "B. Phishing", "C. SQL Injection", "D. Zero-day"],
+                    answer: 1,
+                    explanation: "Phishing is a social engineering technique where attackers send fraudulent messages designed to trick individuals into revealing sensitive information. DDoS is a network attack, SQL Injection is an application attack, and Zero-day refers to a vulnerability unknown to the vendor."
+                },
+                {
+                    question: "What type of malware encrypts files and demands payment for decryption?",
+                    options: ["A. Trojan", "B. Ransomware", "C. Spyware", "D. Adware"],
+                    answer: 1,
+                    explanation: "Ransomware is a type of malicious software that encrypts files on a victim's system and demands payment (ransom) for the decryption key. Trojans disguise themselves as legitimate software, spyware collects information without consent, and adware displays unwanted advertisements."
+                },
+                {
+                    question: "Which protocol provides encryption for secure web browsing?",
+                    options: ["A. FTP", "B. HTTP", "C. HTTPS", "D. SMTP"],
+                    answer: 2,
+                    explanation: "HTTPS (Hypertext Transfer Protocol Secure) provides encrypted communication and secure identification of a network web server. HTTP is unencrypted, FTP is for file transfer, and SMTP is for email transmission."
+                },
+                {
+                    question: "What does CIA stand for in cybersecurity?",
+                    options: ["A. Central Intelligence Agency", "B. Confidentiality, Integrity, Availability", "C. Cyber Incident Assessment", "D. Critical Infrastructure Assurance"],
+                    answer: 1,
+                    explanation: "In cybersecurity, CIA stands for Confidentiality, Integrity, and Availability - the three core principles of information security. Confidentiality protects data from unauthorized access, Integrity ensures data is accurate and untampered, and Availability ensures systems are accessible when needed."
+                },
+                {
+                    question: "Which authentication method uses physical characteristics?",
+                    options: ["A. Password", "B. PIN", "C. Biometrics", "D. Security token"],
+                    answer: 2,
+                    explanation: "Biometrics authentication uses unique physical characteristics such as fingerprints, facial recognition, or iris scans. Passwords and PINs are knowledge-based factors, while security tokens are possession-based factors."
+                },
+                {
+                    question: "What is the primary purpose of a firewall?",
+                    options: ["A. Virus detection", "B. Network traffic control", "C. Data encryption", "D. User authentication"],
+                    answer: 1,
+                    explanation: "A firewall's primary purpose is to control incoming and outgoing network traffic based on predetermined security rules. While some firewalls may have additional features, their core function is traffic control, not virus detection, encryption, or authentication."
+                },
+                {
+                    question: "Which type of attack involves overwhelming a system with traffic?",
+                    options: ["A. Phishing", "B. DoS", "C. Brute force", "D. Man-in-the-middle"],
+                    answer: 1,
+                    explanation: "A Denial of Service (DoS) attack aims to make a machine or network resource unavailable by overwhelming it with traffic. Phishing is social engineering, brute force attempts to crack credentials, and man-in-the-middle intercepts communications."
+                },
+                {
+                    question: "What is multi-factor authentication?",
+                    options: ["A. Using multiple passwords", "B. Verifying identity with multiple methods", "C. Having multiple user accounts", "D. Using multiple firewalls"],
+                    answer: 1,
+                    explanation: "Multi-factor authentication (MFA) requires users to provide two or more verification factors to gain access to a resource. These factors typically include something you know (password), something you have (token), and something you are (biometric)."
+                },
+                {
+                    question: "Which port is typically used for SSH?",
+                    options: ["A. 21", "B. 22", "C. 23", "D. 25"],
+                    answer: 1,
+                    explanation: "SSH (Secure Shell) uses port 22 by default. Port 21 is for FTP, port 23 is for Telnet, and port 25 is for SMTP."
+                },
+                {
+                    question: "What does VPN stand for?",
+                    options: ["A. Virtual Private Network", "B. Verified Public Network", "C. Virtual Public Network", "D. Verified Private Network"],
+                    answer: 0,
+                    explanation: "VPN stands for Virtual Private Network. It extends a private network across a public network, enabling users to send and receive data as if their devices were directly connected to the private network."
+                },
+                {
+                    question: "Which of these is a symmetric encryption algorithm?",
+                    options: ["A. RSA", "B. AES", "C. ECC", "D. Diffie-Hellman"],
+                    answer: 1,
+                    explanation: "AES (Advanced Encryption Standard) is a symmetric encryption algorithm, meaning the same key is used for both encryption and decryption. RSA, ECC, and Diffie-Hellman are asymmetric algorithms that use public/private key pairs."
+                },
+                {
+                    question: "What is the purpose of hashing?",
+                    options: ["A. Encrypt data", "B. Create fixed-size representation of data", "C. Compress data", "D. Transmit data securely"],
+                    answer: 1,
+                    explanation: "Hashing creates a fixed-size string of characters (hash) from input data of any size. It's primarily used to verify data integrity, as any change to the input will produce a different hash. Unlike encryption, hashing is a one-way process."
+                },
+                {
+                    question: "Which security control is considered physical?",
+                    options: ["A. Firewall", "B. Encryption", "C. Access control vestibule", "D. Antivirus software"],
+                    answer: 2,
+                    explanation: "An access control vestibule (or mantrap) is a physical security control that consists of two doors where the second door only opens after the first door has closed. Firewalls, encryption, and antivirus software are technical controls."
+                },
+                {
+                    question: "What type of assessment scans for vulnerabilities?",
+                    options: ["A. Risk assessment", "B. Vulnerability scan", "C. Penetration test", "D. Security audit"],
+                    answer: 1,
+                    explanation: "A vulnerability scan automatically examines systems for known vulnerabilities. Risk assessment evaluates potential risks, penetration testing involves actively exploiting vulnerabilities, and security audit is a comprehensive review of security controls."
+                },
+                {
+                    question: "Which law protects health information in the US?",
+                    options: ["A. SOX", "B. HIPAA", "C. GLBA", "D. FISMA"],
+                    answer: 1,
+                    explanation: "HIPAA (Health Insurance Portability and Accountability Act) protects sensitive patient health information. SOX relates to financial reporting, GLBA to financial privacy, and FISMA to federal information security."
+                },
+                {
+                    question: "What is the principle of least privilege?",
+                    options: ["A. Granting minimum access necessary", "B. Using the simplest security measures", "C. Restricting administrator privileges", "D. Limiting physical access"],
+                    answer: 0,
+                    explanation: "The principle of least privilege means users and systems should have only the minimum levels of access necessary to perform their functions. This limits the potential damage from accidents or malicious actions."
+                },
+                {
+                    question: "Which wireless security protocol is considered most secure?",
+                    options: ["A. WEP", "B. WPA", "C. WPA2", "D. WPS"],
+                    answer: 2,
+                    explanation: "WPA2 (Wi-Fi Protected Access 2) is currently the most secure wireless security protocol for general use. WEP is outdated and insecure, WPA is improved but still vulnerable, and WPS has known security flaws."
+                },
+                {
+                    question: "What does SIEM stand for?",
+                    options: ["A. Security Information and Event Management", "B. Secure Internet Encryption Method", "C. System Integrity and Event Monitoring", "D. Security Incident and Emergency Management"],
+                    answer: 0,
+                    explanation: "SIEM stands for Security Information and Event Management. It provides real-time analysis of security alerts generated by applications and network hardware, combining SIM (security information management) and SEM (security event management)."
+                },
+                {
+                    question: "Which type of virus can change its code to avoid detection?",
+                    options: ["A. Trojan", "B. Polymorphic", "C. Ransomware", "D. Worm"],
+                    answer: 1,
+                    explanation: "A polymorphic virus changes its code with each infection to avoid detection by signature-based antivirus software. Trojans disguise themselves as legitimate software, ransomware encrypts files for ransom, and worms self-replicate across networks."
+                },
+                {
+                    question: "What is the main purpose of disaster recovery planning?",
+                    options: ["A. Prevent security incidents", "B. Restore operations after disruption", "C. Identify vulnerabilities", "D. Train employees on security"],
+                    answer: 1,
+                    explanation: "Disaster recovery planning focuses on restoring IT systems and operations after a disruptive event. While related to security, its primary goal is business continuity rather than prevention, vulnerability identification, or training."
+                }
+            ],
+            2: [
+                {
+                    question: "Which architecture uses a single point of failure?",
+                    options: ["A. Load balanced", "B. Distributed", "C. Active-passive cluster", "D. Single server"],
+                    answer: 3,
+                    explanation: "A single server architecture has a single point of failure - if that server fails, the entire service becomes unavailable. Load balanced, distributed, and active-passive cluster architectures are designed to eliminate single points of failure."
+                },
+                {
+                    question: "What is the purpose of a DMZ?",
+                    options: ["A. To isolate internal networks", "B. To provide a secure area for public services", "C. To encrypt network traffic", "D. To authenticate users"],
+                    answer: 1,
+                    explanation: "A DMZ (Demilitarized Zone) is a perimeter network that provides a secure area for hosting public-facing services like web servers, isolating them from the internal network while still allowing controlled access."
+                },
+                {
+                    question: "Which cloud service model provides hardware infrastructure?",
+                    options: ["A. SaaS", "B. PaaS", "C. IaaS", "D. DaaS"],
+                    answer: 2,
+                    explanation: "IaaS (Infrastructure as a Service) provides virtualized computing resources over the internet, including servers, storage, and networking hardware. SaaS provides software applications, PaaS provides development platforms, and DaaS provides desktop environments."
+                },
+                {
+                    question: "What is containerization?",
+                    options: ["A. Isolating applications in lightweight environments", "B. Storing data in encrypted containers", "C. Packaging multiple security tools", "D. Segmenting network traffic"],
+                    answer: 0,
+                    explanation: "Containerization is a lightweight form of virtualization that packages an application and its dependencies together in an isolated environment called a container. This provides consistency across environments and efficient resource usage."
+                },
+                {
+                    question: "Which provides secure remote access to a network?",
+                    options: ["A. VLAN", "B. VPN", "C. DNS", "D. DHCP"],
+                    answer: 1,
+                    explanation: "A VPN (Virtual Private Network) provides secure remote access to a network by creating an encrypted tunnel over the internet. VLANs segment networks, DNS resolves domain names, and DHCP assigns IP addresses."
+                },
+                {
+                    question: "What is the main security benefit of microsegmentation?",
+                    options: ["A. Limiting lateral movement", "B. Improving network speed", "C. Reducing hardware costs", "D. Simplifying administration"],
+                    answer: 0,
+                    explanation: "Microsegmentation enhances security by dividing networks into small segments to limit lateral movement. If an attacker compromises one segment, they cannot easily move to other segments. It doesn't primarily improve speed, reduce costs, or simplify administration."
+                },
+                {
+                    question: "Which is a hardware security module used for?",
+                    options: ["A. Secure key storage", "B. Network segmentation", "C. Intrusion detection", "D. Malware analysis"],
+                    answer: 0,
+                    explanation: "A Hardware Security Module (HSM) is a physical computing device that safeguards and manages digital keys for strong authentication and provides cryptoprocessing. It's specifically designed for secure key storage and cryptographic operations."
+                },
+                {
+                    question: "What does RAID provide?",
+                    options: ["A. Redundancy", "B. Encryption", "C. Authentication", "D. Firewalling"],
+                    answer: 0,
+                    explanation: "RAID (Redundant Array of Independent Disks) combines multiple physical disk drives into a single logical unit to provide data redundancy and/or improve performance. It does not provide encryption, authentication, or firewalling capabilities."
+                },
+                {
+                    question: "Which is a secure protocol for transferring files?",
+                    options: ["A. FTP", "B. TFTP", "C. SFTP", "D. HTTP"],
+                    answer: 2,
+                    explanation: "SFTP (SSH File Transfer Protocol) provides secure file transfer by operating over an SSH encrypted connection. FTP and TFTP transmit data in cleartext, and HTTP is not designed for secure file transfer."
+                },
+                {
+                    question: "What is the purpose of NAC?",
+                    options: ["A. Network Access Control", "B. Network Address Configuration", "C. Native Authentication Certificate", "D. Next-gen Antivirus Compliance"],
+                    answer: 0,
+                    explanation: "NAC stands for Network Access Control. It is a security approach that restricts the availability of network resources to endpoint devices that comply with a defined security policy."
+                },
+                {
+                    question: "Which provides the strongest wireless encryption?",
+                    options: ["A. WEP", "B. WPA", "C. WPA2", "D. WPA3"],
+                    answer: 3,
+                    explanation: "WPA3 (Wi-Fi Protected Access 3) is the latest and most secure wireless encryption protocol. It provides stronger encryption, protection against brute-force attacks, and easier security for IoT devices compared to WPA2, WPA, and WEP."
+                },
+                {
+                    question: "What is the main purpose of SSL/TLS?",
+                    options: ["A. Secure email communication", "B. Encrypt web traffic", "C. Protect wireless networks", "D. Authenticate users"],
+                    answer: 1,
+                    explanation: "SSL (Secure Sockets Layer) and its successor TLS (Transport Layer Security) are primarily used to encrypt web traffic between clients and servers. While they can be used for other purposes, web encryption is their most common application."
+                },
+                {
+                    question: "Which is a benefit of virtualization?",
+                    options: ["A. Improved physical security", "B. Hardware isolation", "C. Reduced power consumption", "D. Simplified backup"],
+                    answer: 2,
+                    explanation: "Virtualization reduces power consumption by allowing multiple virtual machines to run on a single physical server, decreasing the number of physical machines needed. While it offers other benefits, reduced power consumption is a significant advantage."
+                },
+                {
+                    question: "What does SDN stand for?",
+                    options: ["A. Software Defined Network", "B. Secure Data Network", "C. System Defense Node", "D. Security Development Lifecycle"],
+                    answer: 0,
+                    explanation: "SDN stands for Software Defined Networking. It is an approach to networking that uses software-based controllers or application programming interfaces (APIs) to communicate with underlying hardware infrastructure and direct traffic on a network."
+                },
+                {
+                    question: "Which is a characteristic of zero trust architecture?",
+                    options: ["A. Implicit trust", "B. Verify never", "C. Assume breach", "D. Network perimeter focus"],
+                    answer: 2,
+                    explanation: "A core principle of zero trust architecture is 'assume breach' - never trust any entity by default, whether inside or outside the network perimeter. It requires strict identity verification for every person and device trying to access resources."
+                },
+                {
+                    question: "What is the primary security risk of IoT devices?",
+                    options: ["A. Weak encryption", "B. Default credentials", "C. Lack of physical security", "D. High cost"],
+                    answer: 1,
+                    explanation: "The primary security risk of many IoT devices is that they come with default credentials that users often don't change, making them easy targets for attackers. While other issues exist, default credentials are among the most common vulnerabilities."
+                },
+                {
+                    question: "Which provides secure DNS querying?",
+                    options: ["A. DNSsec", "B. DHCP", "C. FTP", "D. SNMP"],
+                    answer: 0,
+                    explanation: "DNSSEC (Domain Name System Security Extensions) adds security to DNS by providing authentication and integrity checking. It protects against attacks like DNS cache poisoning. DHCP assigns IP addresses, FTP transfers files, and SNMP manages networks."
+                },
+                {
+                    question: "What is the purpose of a honeypot?",
+                    options: ["A. To attract and analyze attacks", "B. To store honey tokens", "C. To encrypt data", "D. To authenticate users"],
+                    answer: 0,
+                    explanation: "A honeypot is a security mechanism designed to attract and detect attackers by simulating vulnerable systems or services. It allows security professionals to study attack methods and gather intelligence without risking actual systems."
+                },
+                {
+                    question: "Which is a security benefit of cloud computing?",
+                    options: ["A. Reduced cost", "B. Professional security management", "C. Complete data control", "D. No need for backups"],
+                    answer: 1,
+                    explanation: "A significant security benefit of cloud computing is access to professional security management provided by cloud providers who have dedicated security teams and resources that may be beyond the means of individual organizations."
+                },
+                {
+                    question: "What is the main security concern with BYOD?",
+                    options: ["A. Device compatibility", "B. Data leakage", "C. Network speed", "D. User training"],
+                    answer: 1,
+                    explanation: "The main security concern with BYOD (Bring Your Own Device) is data leakage, as personal devices may not have the same security controls as corporate devices and might be used in insecure ways outside the workplace."
+                }
+            ],
+            3: [
+                {
+                    question: "Which is used to securely wipe a hard drive?",
+                    options: ["A. Quick format", "B. Degaussing", "C. Defragmentation", "D. Compression"],
+                    answer: 1,
+                    explanation: "Degaussing uses a powerful magnetic field to permanently erase data from magnetic storage media like hard drives. Quick format doesn't securely erase data, defragmentation reorganizes data, and compression reduces file size."
+                },
+                {
+                    question: "What is the purpose of password hashing?",
+                    options: ["A. Encrypt passwords", "B. Verify password without storing plaintext", "C. Generate strong passwords", "D. Transmit passwords securely"],
+                    answer: 1,
+                    explanation: "Password hashing allows systems to verify passwords without storing them in plaintext. When a user enters a password, it's hashed and compared to the stored hash. This protects passwords even if the database is compromised."
+                },
+                {
+                    question: "Which provides the strongest authentication?",
+                    options: ["A. Password", "B. Password + security question", "C. Smart card + PIN", "D. Biometric"],
+                    answer: 2,
+                    explanation: "Smart card + PIN provides two-factor authentication (something you have + something you know), which is stronger than single-factor methods like password alone or biometric alone (which can have false acceptance issues)."
+                },
+                {
+                    question: "What is salting in password security?",
+                    options: ["A. Adding random data to passwords before hashing", "B. Encrypting passwords twice", "C. Using special characters in passwords", "D. Storing passwords in a secure database"],
+                    answer: 0,
+                    explanation: "Salting involves adding random data to each password before hashing it. This ensures that even if two users have the same password, their hashes will be different, protecting against rainbow table attacks."
+                },
+                {
+                    question: "Which protocol is used for secure email?",
+                    options: ["A. SMTP", "B. POP3", "C. IMAP", "D. S/MIME"],
+                    answer: 3,
+                    explanation: "S/MIME (Secure/Multipurpose Internet Mail Extensions) provides encryption and digital signing for email messages. SMTP, POP3, and IMAP are email protocols but don't inherently provide security features like encryption."
+                },
+                {
+                    question: "What is the purpose of a certificate authority?",
+                    options: ["A. Issue digital certificates", "B. Encrypt web traffic", "C. Authenticate users", "D. Manage firewalls"],
+                    answer: 0,
+                    explanation: "A Certificate Authority (CA) issues digital certificates that verify the ownership of public keys. These certificates are used to establish secure connections and verify the identity of websites, organizations, and individuals."
+                },
+                {
+                    question: "Which is an example of physical security?",
+                    options: ["A. Firewall", "B. Encryption", "C. Mantrap", "D. Antivirus"],
+                    answer: 2,
+                    explanation: "A mantrap is a physical security mechanism consisting of two doors where the second door only opens after the first has closed, preventing tailgating. Firewalls, encryption, and antivirus are technical security controls."
+                },
+                {
+                    question: "What does DLP stand for?",
+                    options: ["A. Data Loss Prevention", "B. Digital License Protection", "C. Distributed Load Balancing", "D. Dynamic Link Protocol"],
+                    answer: 0,
+                    explanation: "DLP stands for Data Loss Prevention. It refers to strategies and tools designed to prevent sensitive data from being lost, misused, or accessed by unauthorized users, both in motion and at rest."
+                },
+                {
+                    question: "Which is used for access control?",
+                    options: ["A. RBAC", "B. RSA", "C. RAID", "D. RDP"],
+                    answer: 0,
+                    explanation: "RBAC (Role-Based Access Control) is a method of regulating access to computer resources based on the roles of individual users within an organization. RSA is an encryption algorithm, RAID is storage technology, and RDP is a remote desktop protocol."
+                },
+                {
+                    question: "What is the purpose of penetration testing?",
+                    options: ["A. Find vulnerabilities", "B. Prevent attacks", "C. Train employees", "D. Monitor network traffic"],
+                    answer: 0,
+                    explanation: "Penetration testing (pentesting) involves simulating cyber attacks to identify vulnerabilities in systems, networks, or applications. The goal is to discover security weaknesses before malicious actors can exploit them."
+                },
+                {
+                    question: "Which provides secure file deletion?",
+                    options: ["A. Moving to recycle bin", "B. Quick format", "C. Secure erase", "D. Defragmentation"],
+                    answer: 2,
+                    explanation: "Secure erase methods overwrite data multiple times with patterns to ensure it cannot be recovered. Moving to recycle bin doesn't delete files, quick format doesn't securely erase data, and defragmentation reorganizes files on disk."
+                },
+                {
+                    question: "What is the primary purpose of incident response?",
+                    options: ["A. Prevent all security incidents", "B. Handle security breaches effectively", "C. Punish responsible employees", "D. Improve system performance"],
+                    answer: 1,
+                    explanation: "The primary purpose of incident response is to handle security breaches effectively by containing the damage, eradicating the threat, and recovering systems. While prevention is ideal, the focus is on minimizing impact when incidents occur."
+                },
+                {
+                    question: "Which is a secure coding practice?",
+                    options: ["A. Input validation", "B. Hardcoded credentials", "C. Silent error handling", "D. Using deprecated functions"],
+                    answer: 0,
+                    explanation: "Input validation is a critical secure coding practice that ensures only properly formatted data enters a system, preventing many injection attacks. Hardcoded credentials, silent errors, and deprecated functions introduce security risks."
+                },
+                {
+                    question: "What is the purpose of code signing?",
+                    options: ["A. Verify software authenticity", "B. Encrypt source code", "C. Improve performance", "D. Prevent reverse engineering"],
+                    answer: 0,
+                    explanation: "Code signing uses digital signatures to verify that software code has not been altered or corrupted since it was signed by the developer. It provides authenticity and integrity assurance for software."
+                },
+                {
+                    question: "Which is a mobile device security control?",
+                    options: ["A. Containerization", "B. Virtualization", "C. Fragmentation", "D. Compilation"],
+                    answer: 0,
+                    explanation: "Containerization on mobile devices separates corporate data and applications from personal content using secure containers. This allows organizations to manage and secure business data without controlling the entire device."
+                },
+                {
+                    question: "What does TPM provide?",
+                    options: ["A. Hardware-based security", "B. Network encryption", "C. Threat intelligence", "D. User training"],
+                    answer: 0,
+                    explanation: "TPM (Trusted Platform Module) is a specialized chip that provides hardware-based security functions, including secure generation and storage of cryptographic keys, and verification of platform integrity."
+                },
+                {
+                    question: "Which is used for secure boot?",
+                    options: ["A. UEFI", "B. BIOS", "C. MBR", "D. GPT"],
+                    answer: 0,
+                    explanation: "UEFI (Unified Extensible Firmware Interface) supports secure boot, which verifies the digital signature of bootloaders and operating system components to prevent malware from hijacking the boot process."
+                },
+                {
+                    question: "What is the purpose of sandboxing?",
+                    options: ["A. Isolate untrusted code", "B. Store backup data", "C. Encrypt communications", "D. Authenticate users"],
+                    answer: 0,
+                    explanation: "Sandboxing isolates untrusted code or applications in a restricted environment where they can't harm the host system. This allows safe execution of potentially malicious code for analysis or limited functionality."
+                },
+                {
+                    question: "Which provides secure DNS?",
+                    options: ["A. DNSSEC", "B. DHCP", "C. FTP", "D. SNMP"],
+                    answer: 0,
+                    explanation: "DNSSEC (Domain Name System Security Extensions) adds security to DNS by providing authentication and integrity checking for DNS responses. It protects against attacks like DNS spoofing and cache poisoning."
+                },
+                {
+                    question: "What is the primary security benefit of encryption?",
+                    options: ["A. Confidentiality", "B. Availability", "C. Integrity", "D. Authentication"],
+                    answer: 0,
+                    explanation: "The primary security benefit of encryption is confidentiality - ensuring that only authorized parties can read the encrypted data. While some encryption methods also provide integrity and authentication, confidentiality is the core purpose."
+                }
+            ]
+        };
+
+        let currentSet = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+        function selectSet(setNumber) {
+            currentSet = setNumber;
+            userAnswers = new Array(questionSets[setNumber].length).fill(null);
+            document.getElementById('set-selection').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            showQuestion(0);
+            updateProgress();
+        }
+
+        function showQuestion(index) {
+            currentQuestionIndex = index;
+            const question = questionSets[currentSet][index];
+            
+            // Update question text
+            document.getElementById('question-text').textContent = question.question;
+            
+            // Update options
+            const optionsList = document.getElementById('options');
+            optionsList.innerHTML = '';
+            
+            question.options.forEach((option, i) => {
+                const li = document.createElement('li');
+                li.className = 'option';
+                if (userAnswers[index] === i) {
+                    li.classList.add('selected');
+                }
+                li.textContent = option;
+                li.addEventListener('click', () => selectAnswer(i));
+                optionsList.appendChild(li);
+            });
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').style.display = index > 0 ? 'block' : 'none';
+            document.getElementById('next-btn').style.display = index < questionSets[currentSet].length - 1 ? 'block' : 'none';
+            document.getElementById('submit-btn').style.display = index === questionSets[currentSet].length - 1 ? 'block' : 'none';
+            
+            // Update question counter
+            document.getElementById('question-count').textContent = `Question ${index + 1} of ${questionSets[currentSet].length}`;
+            
+            updateProgress();
+        }
+
+        function selectAnswer(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Update visual selection
+            const options = document.getElementById('options').querySelectorAll('.option');
+            options.forEach((option, i) => {
+                if (i === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        function navigate(direction) {
+            const newIndex = currentQuestionIndex + direction;
+            if (newIndex >= 0 && newIndex < questionSets[currentSet].length) {
+                showQuestion(newIndex);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questionSets[currentSet].length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function submitQuiz() {
+            // Calculate score
+            let correctCount = 0;
+            questionSets[currentSet].forEach((question, index) => {
+                if (userAnswers[index] === question.answer) {
+                    correctCount++;
+                }
+            });
+            
+            const score = (correctCount / questionSets[currentSet].length) * 100;
+            const passed = score >= 80;
+            
+            // Display results
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('score').textContent = `Score: ${score.toFixed(1)}%`;
+            document.getElementById('score').className = passed ? 'score passed' : 'score failed';
+            document.getElementById('pass-fail').textContent = passed ? 
+                'Congratulations! You passed this set.' : 
+                'You did not pass. Review the material and try again.';
+            
+            // Generate review
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+            
+            questionSets[currentSet].forEach((question, index) => {
+                const isCorrect = userAnswers[index] === question.answer;
+                
+                const reviewItem = document.createElement('div');
+                reviewItem.className = 'review-item';
+                
+                const questionText = document.createElement('p');
+                questionText.innerHTML = `<strong>Question ${index + 1}:</strong> ${question.question}`;
+                reviewItem.appendChild(questionText);
+                
+                const yourAnswer = document.createElement('p');
+                yourAnswer.innerHTML = `<strong>Your Answer:</strong> ${userAnswers[index] !== null ? 
+                    question.options[userAnswers[index]] : 'Not answered'}`;
+                yourAnswer.style.color = isCorrect ? 'green' : 'red';
+                reviewItem.appendChild(yourAnswer);
+                
+                if (!isCorrect) {
+                    const correctAnswer = document.createElement('p');
+                    correctAnswer.innerHTML = `<strong>Correct Answer:</strong> ${question.options[question.answer]}`;
+                    correctAnswer.style.color = 'green';
+                    reviewItem.appendChild(correctAnswer);
+                }
+                
+                // Add explanation
+                const explanation = document.createElement('div');
+                explanation.className = 'explanation';
+                explanation.innerHTML = `<strong>Explanation:</strong> ${question.explanation}`;
+                reviewItem.appendChild(explanation);
+                
+                reviewList.appendChild(reviewItem);
+            });
+        }
+
+        function resetQuiz() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('set-selection').style.display = 'block';
+            currentSet = null;
+            currentQuestionIndex = 0;
+            userAnswers = [];
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompTIA Network+ Interactive Flashcards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 900px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        h2 {
+            color: #b21f1f;
+            margin: 15px 0;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            color: #1a2a6c;
+            margin: 15px 0 10px 0;
+            font-size: 1.3rem;
+        }
+        
+        p {
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 5px solid #1a2a6c;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .btn {
+            background-color: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: #b21f1f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+        }
+        
+        .question-container {
+            display: none;
+            text-align: left;
+            margin-top: 20px;
+        }
+        
+        .question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a2a6c;
+            font-size: 1.2rem;
+        }
+        
+        .options {
+            list-style-type: none;
+            margin: 20px 0;
+        }
+        
+        .option {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+            border-color: #1a2a6c;
+        }
+        
+        .option.selected {
+            background-color: #1a2a6c;
+            color: white;
+            border-color: #1a2a6c;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        
+        .progress {
+            margin-top: 15px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .progress-bar-inner {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #1a2a6c;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .score {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #1a2a6c;
+        }
+        
+        .pass {
+            color: #28a745;
+        }
+        
+        .fail {
+            color: #dc3545;
+        }
+        
+        .review-item {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .correct {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .incorrect {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .explanation {
+            background-color: #e9ecef;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .print-btn {
+            background-color: #17a2b8;
+            margin-top: 20px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            width: 30%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .set-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .category {
+            display: inline-block;
+            background-color: #fdbb2d;
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-box {
+                width: 80%;
+                margin-bottom: 15px;
+            }
+            
+            .set-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-network-wired"></i> CompTIA Network+ Interactive Flashcards</h1>
+        <p>Test your knowledge with these exam-style questions</p>
+        
+        <div class="instructions">
+            <h2><i class="fas fa-info-circle"></i> Instructions</h2>
+            <p><i class="fas fa-check-circle"></i> Select a question set to begin (20 questions each)</p>
+            <p><i class="fas fa-check-circle"></i> Answer all questions in the set</p>
+            <p><i class="fas fa-check-circle"></i> You need a score of 80% or higher to pass</p>
+            <p><i class="fas fa-check-circle"></i> Click on your answer choice to select it</p>
+            <p><i class="fas fa-check-circle"></i> Use the navigation buttons to move between questions</p>
+            <p><i class="fas fa-check-circle"></i> Submit your answers when you've completed all questions</p>
+            <p><i class="fas fa-check-circle"></i> Review your results and print them for future reference</p>
+        </div>
+        
+        <div id="set-selection">
+            <h2><i class="fas fa-folder-open"></i> Select a Question Set</h2>
+            <div class="set-buttons">
+                <button class="btn" onclick="startSet(1)"><i class="fas fa-book"></i> Set 1 - Networking Concepts</button>
+                <button class="btn" onclick="startSet(2)"><i class="fas fa-book"></i> Set 2 - Infrastructure & Security</button>
+            </div>
+        </div>
+        
+        <div id="question-container" class="question-container">
+            <div id="question" class="question"></div>
+            <div id="category" class="category"></div>
+            <ul id="options" class="options"></ul>
+            <div class="progress">Question <span id="current">1</span> of <span id="total">20</span></div>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" id="progress-bar-inner"></div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" id="prev-btn" onclick="navigate(-1)"><i class="fas fa-arrow-left"></i> Previous</button>
+                <button class="btn" id="next-btn" onclick="navigate(1)">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+            <button class="btn btn-success" id="submit-btn" onclick="submitAnswers()" style="display: none;"><i class="fas fa-paper-plane"></i> Submit Answers</button>
+        </div>
+        
+        <div id="results" class="results">
+            <h2><i class="fas fa-chart-bar"></i> Your Results</h2>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <p>Questions</p>
+                    <div class="stat-number" id="total-questions">20</div>
+                </div>
+                <div class="stat-box">
+                    <p>Correct</p>
+                    <div class="stat-number" id="correct-answers">0</div>
+                </div>
+                <div class="stat-box">
+                    <p>Score</p>
+                    <div class="stat-number" id="percentage">0%</div>
+                </div>
+            </div>
+            
+            <div id="score" class="score"></div>
+            <div id="review"></div>
+            <button class="btn" onclick="resetQuiz()"><i class="fas fa-redo"></i> Try Another Set</button>
+            <button class="btn print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print Results</button>
+        </div>
+    </div>
+
+    <script>
+        // Question data for both sets with explanations
+        const questionSets = {
+            set1: [
+                {
+                    question: "Which OSI layer is responsible for logical addressing and routing?",
+                    options: ["Layer 2 - Data Link", "Layer 3 - Network", "Layer 4 - Transport", "Layer 5 - Session"],
+                    answer: 1,
+                    explanation: "Layer 3 (Network layer) is responsible for logical addressing and routing. IP addresses operate at this layer, and routers function here to direct traffic between networks.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the default port for HTTPS?",
+                    options: ["80", "443", "8080", "22"],
+                    answer: 1,
+                    explanation: "HTTPS uses port 443 by default. This port is used for secure web traffic encrypted with SSL/TLS, unlike HTTP which uses port 80.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which protocol is used for securely transferring files over a network?",
+                    options: ["FTP", "HTTP", "SFTP", "TFTP"],
+                    answer: 2,
+                    explanation: "SFTP (SSH File Transfer Protocol) provides secure file transfer by operating over an encrypted SSH connection. FTP and TFTP transmit data in clear text, making them insecure.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What does VLAN stand for?",
+                    options: ["Virtual Local Area Network", "Very Large Area Network", "Variable Length Access Node", "Visual Local Area Node"],
+                    answer: 0,
+                    explanation: "VLAN stands for Virtual Local Area Network. VLANs allow network administrators to logically segment a physical network into multiple broadcast domains, improving security and efficiency.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which of the following is a classless routing protocol?",
+                    options: ["RIPv1", "IGRP", "RIPv2", "BGP"],
+                    answer: 2,
+                    explanation: "RIPv2 is a classless routing protocol because it supports Variable Length Subnet Masks (VLSM) and CIDR. RIPv1 and IGRP are classful protocols that don't include subnet mask information in their updates.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the purpose of ARP?",
+                    options: ["To resolve IP addresses to MAC addresses", "To resolve hostnames to IP addresses", "To assign IP addresses dynamically", "To encrypt network traffic"],
+                    answer: 0,
+                    explanation: "ARP (Address Resolution Protocol) resolves IP addresses to MAC addresses so that devices on the same local network can communicate with each other at the data link layer.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which wireless standard operates at 5 GHz and offers up to 54 Mbps?",
+                    options: ["802.11a", "802.11b", "802.11g", "802.11n"],
+                    answer: 0,
+                    explanation: "802.11a operates in the 5 GHz frequency range and provides data rates up to 54 Mbps. 802.11b and 802.11g operate at 2.4 GHz, while 802.11n operates at both frequencies.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What type of cable is used to connect two switches together?",
+                    options: ["Straight-through cable", "Crossover cable", "Rollover cable", "Console cable"],
+                    answer: 1,
+                    explanation: "A crossover cable is used to connect two similar devices like two switches, two routers, or two computers. Straight-through cables are used to connect dissimilar devices like a computer to a switch.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "Which protocol is used for email retrieval?",
+                    options: ["SMTP", "POP3", "IMAP", "Both POP3 and IMAP"],
+                    answer: 3,
+                    explanation: "Both POP3 and IMAP are used for email retrieval from a mail server. SMTP is used for sending email. POP3 downloads emails to the local device, while IMAP keeps them on the server.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the subnet mask for a /24 network?",
+                    options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
+                    answer: 2,
+                    explanation: "A /24 network uses the subnet mask 255.255.255.0. The /24 notation represents 24 bits set to 1 in the subnet mask, which corresponds to 255.255.255.0 in dotted decimal format.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which device operates at the Data Link layer?",
+                    options: ["Router", "Hub", "Switch", "Repeater"],
+                    answer: 2,
+                    explanation: "A switch operates at the Data Link layer (Layer 2) of the OSI model. It uses MAC addresses to forward frames to the appropriate device within a local network.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "What is the maximum length for a CAT5e cable?",
+                    options: ["50 meters", "100 meters", "150 meters", "200 meters"],
+                    answer: 1,
+                    explanation: "The maximum length for a CAT5e cable is 100 meters (328 feet). Beyond this length, signal degradation may occur, leading to data transmission errors.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "Which protocol is connection-oriented?",
+                    options: ["TCP", "UDP", "IP", "ICMP"],
+                    answer: 0,
+                    explanation: "TCP (Transmission Control Protocol) is connection-oriented, meaning it establishes a connection before transmitting data and ensures delivery through acknowledgments and retransmissions.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What does NAT stand for?",
+                    options: ["Network Address Translation", "Network Administration Tool", "Node Activation Technology", "Network Access Tunneling"],
+                    answer: 0,
+                    explanation: "NAT stands for Network Address Translation. It allows multiple devices on a private network to share a single public IP address for internet communication.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which type of attack involves sending falsified ARP messages?",
+                    options: ["DNS spoofing", "ARP poisoning", "DDoS", "Phishing"],
+                    answer: 1,
+                    explanation: "ARP poisoning (or ARP spoofing) involves sending falsified ARP messages to associate the attacker's MAC address with the IP address of a legitimate device on the network.",
+                    category: "Security"
+                },
+                {
+                    question: "What is the purpose of a default gateway?",
+                    options: ["To provide wireless access", "To connect different networks", "To filter network traffic", "To assign IP addresses"],
+                    answer: 1,
+                    explanation: "The default gateway connects different networks, allowing devices on a local network to communicate with devices on other networks, such as the internet.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which protocol is used for automatic IP address assignment?",
+                    options: ["DNS", "DHCP", "FTP", "SNMP"],
+                    answer: 1,
+                    explanation: "DHCP (Dynamic Host Configuration Protocol) is used for automatic IP address assignment, along with other network configuration parameters like subnet mask and default gateway.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the bandwidth of a T1 line?",
+                    options: ["1.544 Mbps", "2.048 Mbps", "44.736 Mbps", "10 Mbps"],
+                    answer: 0,
+                    explanation: "A T1 line has a bandwidth of 1.544 Mbps. It's a dedicated telephone connection supporting voice and data transmission.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "Which tool is used to test network connectivity?",
+                    options: ["ping", "tracert", "ipconfig", "nslookup"],
+                    answer: 0,
+                    explanation: "The ping command is used to test network connectivity between devices by sending ICMP echo request packets and measuring response times.",
+                    category: "Troubleshooting"
+                },
+                {
+                    question: "What is the main function of a firewall?",
+                    options: ["To prevent unauthorized access", "To increase network speed", "To assign IP addresses", "To resolve domain names"],
+                    answer: 0,
+                    explanation: "The main function of a firewall is to prevent unauthorized access to or from a private network by controlling incoming and outgoing network traffic based on security rules.",
+                    category: "Security"
+                }
+            ],
+            set2: [
+                {
+                    question: "Which protocol is used for voice and video transmission?",
+                    options: ["TCP", "UDP", "FTP", "HTTP"],
+                    answer: 1,
+                    explanation: "UDP (User Datagram Protocol) is commonly used for voice and video transmission because it's faster than TCP. While UDP doesn't guarantee delivery, it's preferable for real-time applications where speed is more important than reliability.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the purpose of DNS?",
+                    options: ["To assign IP addresses", "To resolve domain names to IP addresses", "To encrypt network traffic", "To connect to remote servers"],
+                    answer: 1,
+                    explanation: "DNS (Domain Name System) resolves human-readable domain names (like www.example.com) to IP addresses that computers use to identify each other on the network. It's often described as the 'phonebook of the Internet'.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which network topology has all devices connected to a central device?",
+                    options: ["Bus", "Ring", "Star", "Mesh"],
+                    answer: 2,
+                    explanation: "In a star topology, all devices are connected to a central device such as a hub or switch. This is the most common topology in modern LANs as it's easier to manage and more fault-tolerant than bus or ring topologies.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "What is the range of a Class B private IP address?",
+                    options: ["10.0.0.0 to 10.255.255.255", "172.16.0.0 to 172.31.255.255", "192.168.0.0 to 192.168.255.255", "169.254.0.0 to 169.254.255.255"],
+                    answer: 1,
+                    explanation: "Class B private IP addresses range from 172.16.0.0 to 172.31.255.255. These addresses are reserved for use in private networks and are not routable on the public Internet.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which device operates at the Physical layer?",
+                    options: ["Switch", "Router", "Hub", "Bridge"],
+                    answer: 2,
+                    explanation: "A hub operates at the Physical layer (Layer 1) of the OSI model. It simply receives data and broadcasts it to all connected devices without any intelligence. Switches and bridges operate at Layer 2, while routers operate at Layer 3.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "What is the purpose of SSH?",
+                    options: ["Secure file transfer", "Secure remote access", "Domain name resolution", "Network address translation"],
+                    answer: 1,
+                    explanation: "SSH (Secure Shell) provides secure remote access to network devices and servers. It encrypts all communication between the client and server, preventing eavesdropping and connection hijacking.",
+                    category: "Security"
+                },
+                {
+                    question: "Which protocol is used for sending email?",
+                    options: ["POP3", "IMAP", "SMTP", "HTTP"],
+                    answer: 2,
+                    explanation: "SMTP (Simple Mail Transfer Protocol) is used for sending email messages between servers and from clients to servers. POP3 and IMAP are used for retrieving emails from servers.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What does MAC stand for in networking?",
+                    options: ["Media Access Control", "Mandatory Access Control", "Multimedia Access Code", "Managed Access Channel"],
+                    answer: 0,
+                    explanation: "MAC stands for Media Access Control. The MAC address is a unique identifier assigned to network interfaces for communications at the data link layer of a network segment.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which type of network has a limited geographical scope?",
+                    options: ["WAN", "LAN", "MAN", "PAN"],
+                    answer: 1,
+                    explanation: "LAN (Local Area Network) has a limited geographical scope, typically within a building or campus. WANs cover larger areas, MANs cover metropolitan areas, and PANs are personal area networks for devices close to a person.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the maximum speed of Gigabit Ethernet?",
+                    options: ["100 Mbps", "1000 Mbps", "10 Gbps", "100 Gbps"],
+                    answer: 1,
+                    explanation: "Gigabit Ethernet has a maximum speed of 1000 Mbps (1 Gbps). It's a common standard for wired LAN connections, offering ten times the speed of Fast Ethernet (100 Mbps).",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "Which protocol is used for time synchronization?",
+                    options: ["NTP", "SNTP", "FTP", "HTTP"],
+                    answer: 0,
+                    explanation: "NTP (Network Time Protocol) is used for time synchronization between computer systems over packet-switched networks. It helps maintain accurate time across network devices.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the purpose of a proxy server?",
+                    options: ["To assign IP addresses", "To filter and forward network requests", "To connect different networks", "To resolve domain names"],
+                    answer: 1,
+                    explanation: "A proxy server acts as an intermediary for requests from clients seeking resources from other servers. It can provide content filtering, caching, and anonymity.",
+                    category: "Security"
+                },
+                {
+                    question: "Which cable type is immune to electromagnetic interference?",
+                    options: ["UTP", "STP", "Coaxial", "Fiber optic"],
+                    answer: 3,
+                    explanation: "Fiber optic cable is immune to electromagnetic interference because it uses light to transmit data rather than electrical signals. This makes it ideal for environments with high EMI.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "What does ICMP stand for?",
+                    options: ["Internet Control Message Protocol", "Internet Connection Management Protocol", "Internal Control Message Process", "Internet Cable Management Protocol"],
+                    answer: 0,
+                    explanation: "ICMP stands for Internet Control Message Protocol. It is used by network devices to send error messages and operational information, such as with the ping command.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which device is used to connect multiple networks and make forwarding decisions based on IP addresses?",
+                    options: ["Switch", "Hub", "Router", "Bridge"],
+                    answer: 2,
+                    explanation: "A router is used to connect multiple networks and makes forwarding decisions based on IP addresses. It operates at the Network layer (Layer 3) of the OSI model.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "What is the purpose of RAID?",
+                    options: ["To increase network speed", "To provide redundancy and improve performance", "To secure network traffic", "To assign IP addresses"],
+                    answer: 1,
+                    explanation: "RAID (Redundant Array of Independent Disks) combines multiple physical disk drives into a single logical unit to provide data redundancy, improve performance, or both.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "Which protocol is used for network discovery?",
+                    options: ["CDP", "LLDP", "Both CDP and LLDP", "SNMP"],
+                    answer: 2,
+                    explanation: "Both CDP (Cisco Discovery Protocol) and LLDP (Link Layer Discovery Protocol) are used for network discovery. They allow devices to advertise information about themselves to directly connected devices.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "What is the default subnet mask for a Class C network?",
+                    options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
+                    answer: 2,
+                    explanation: "The default subnet mask for a Class C network is 255.255.255.0. Class C networks use the first three octets for network identification and the last octet for host identification.",
+                    category: "Networking Concepts"
+                },
+                {
+                    question: "Which wireless standard operates at 2.4 GHz and offers up to 11 Mbps?",
+                    options: ["802.11a", "802.11b", "802.11g", "802.11n"],
+                    answer: 1,
+                    explanation: "802.11b operates in the 2.4 GHz frequency range and offers data rates up to 11 Mbps. It was one of the first widely adopted Wi-Fi standards.",
+                    category: "Infrastructure"
+                },
+                {
+                    question: "What is the purpose of a loopback address?",
+                    options: ["To test network connectivity", "To assign to network devices", "To connect to the internet", "To secure network traffic"],
+                    answer: 0,
+                    explanation: "The loopback address (127.0.0.1 in IPv4) is used to test network connectivity on the local device. It allows a device to send packets to itself without leaving the network interface.",
+                    category: "Troubleshooting"
+                }
+            ]
+        };
+
+        let currentSet = [];
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let quizActive = false;
+
+        function startSet(setNumber) {
+            currentSet = setNumber === 1 ? questionSets.set1 : questionSets.set2;
+            currentQuestion = 0;
+            userAnswers = new Array(currentSet.length).fill(null);
+            quizActive = true;
+            
+            document.getElementById('set-selection').style.display = 'none';
+            document.getElementById('question-container').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionElem = document.getElementById('question');
+            const categoryElem = document.getElementById('category');
+            const optionsElem = document.getElementById('options');
+            const currentElem = document.getElementById('current');
+            const totalElem = document.getElementById('total');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const progressBar = document.getElementById('progress-bar-inner');
+            
+            questionElem.textContent = currentSet[currentQuestion].question;
+            categoryElem.textContent = currentSet[currentQuestion].category;
+            optionsElem.innerHTML = '';
+            
+            currentSet[currentQuestion].options.forEach((option, index) => {
+                const li = document.createElement('li');
+                li.className = 'option';
+                if (userAnswers[currentQuestion] === index) {
+                    li.classList.add('selected');
+                }
+                li.textContent = option;
+                li.onclick = () => selectOption(index);
+                optionsElem.appendChild(li);
+            });
+            
+            currentElem.textContent = currentQuestion + 1;
+            totalElem.textContent = currentSet.length;
+            
+            // Update progress bar
+            const progressPercentage = ((currentQuestion + 1) / currentSet.length) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = false;
+            
+            if (currentQuestion === currentSet.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function selectOption(index) {
+            userAnswers[currentQuestion] = index;
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, i) => {
+                if (i === index) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        function navigate(direction) {
+            currentQuestion += direction;
+            showQuestion();
+        }
+
+        function submitAnswers() {
+            quizActive = false;
+            let score = 0;
+            let reviewHTML = '';
+            
+            for (let i = 0; i < currentSet.length; i++) {
+                if (userAnswers[i] === currentSet[i].answer) {
+                    score++;
+                    reviewHTML += `
+                        <div class="review-item">
+                            <p><strong>Question ${i+1}:</strong> ${currentSet[i].question}</p>
+                            <p class="correct">Your answer: ${currentSet[i].options[userAnswers[i]]} ✓</p>
+                            <div class="explanation">
+                                <p><strong>Explanation:</strong> ${currentSet[i].explanation}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    reviewHTML += `
+                        <div class="review-item">
+                            <p><strong>Question ${i+1}:</strong> ${currentSet[i].question}</p>
+                            <p class="incorrect">Your answer: ${userAnswers[i] !== null ? currentSet[i].options[userAnswers[i]] : "Not answered"} ✗</p>
+                            <p class="correct">Correct answer: ${currentSet[i].options[currentSet[i].answer]}</p>
+                            <div class="explanation">
+                                <p><strong>Explanation:</strong> ${currentSet[i].explanation}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            const percentage = (score / currentSet.length) * 100;
+            const scoreElem = document.getElementById('score');
+            scoreElem.textContent = `Score: ${score}/${currentSet.length} (${percentage.toFixed(1)}%)`;
+            
+            // Update stats
+            document.getElementById('total-questions').textContent = currentSet.length;
+            document.getElementById('correct-answers').textContent = score;
+            document.getElementById('percentage').textContent = `${percentage.toFixed(1)}%`;
+            
+            if (percentage >= 80) {
+                scoreElem.classList.add('pass');
+                scoreElem.innerHTML += '<br>Congratulations! You passed!';
+            } else {
+                scoreElem.classList.add('fail');
+                scoreElem.innerHTML += '<br>You did not pass. Please try again.';
+            }
+            
+            document.getElementById('review').innerHTML = reviewHTML;
+            document.getElementById('question-container').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function resetQuiz() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('set-selection').style.display = 'block';
+            document.getElementById('score').classList.remove('pass', 'fail');
+        }
+
+        // Initial setup
+        document.getElementById('question-container').style.display = 'none';
+        document.getElementById('results').style.display = 'none';
+    </script>
+</body>
+</html>
