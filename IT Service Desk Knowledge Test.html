@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Service Desk Analyst Knowledge Test</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafc;
+            border-radius: 8px;
+            border: 1px solid #e0e6ed;
+        }
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .options {
+            margin-left: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+        label:hover {
+            background-color: #edf2f7;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .section-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 25px 0 15px 0;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        #submit-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        #submit-btn:hover {
+            background-color: #2980b9;
+        }
+        #print-btn {
+            background-color: #2ecc71;
+            color: white;
+            display: none;
+        }
+        #print-btn:hover {
+            background-color: #27ae60;
+        }
+        #reset-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        #reset-btn:hover {
+            background-color: #c0392b;
+        }
+        .results {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9fafc;
+            border-radius: 8px;
+            border: 1px solid #e0e6ed;
+        }
+        .score {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .high-score {
+            color: #27ae60;
+        }
+        .medium-score {
+            color: #f39c12;
+        }
+        .low-score {
+            color: #e74c3c;
+        }
+        .explanation {
+            background-color: #f4f6f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+        .correct {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        .incorrect {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        .answer-label {
+            background-color: #eafaf1;
+            border-left: 4px solid #27ae60;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .container, .container * {
+                visibility: visible;
+            }
+            .container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+            .buttons, button {
+                display: none !important;
+            }
+            .results, .results * {
+                visibility: visible;
+            }
+            .explanation {
+                display: block !important;
+            }
+        }
+        .progress-bar {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .progress-text {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>IT Service Desk Analyst Knowledge Test</h1>
+            <p>Test your knowledge for the IT Service Desk Analyst position</p>
+        </header>
+        
+        <div class="instructions">
+            <p><strong>Instructions:</strong> This test consists of 40 questions divided into four sections. 
+                Select the best answer for each question. After completing the test, click "Submit Test" 
+                to see your score and detailed explanations. You can print your results for your records.</p>
+        </div>
+
+        <div class="progress-text">Progress: <span id="progress-count">0</span>/40 questions answered</div>
+        <div class="progress-bar">
+            <div class="progress" id="progress-bar"></div>
+        </div>
+        
+        <form id="quiz-form">
+            <h3 class="section-title">Section 1: Technical Knowledge (15 Questions)</h3>
+            
+            <div class="question">
+                <div class="question-text">1. What does DHCP stand for and what is its primary function?</div>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A"> A) Dynamic Host Configuration Protocol - To assign IP addresses automatically</label>
+                    <label><input type="radio" name="q1" value="B"> B) Dynamic Host Connection Protocol - To secure the network connection</label>
+                    <label><input type="radio" name="q1" value="C"> C) Domain Host Configuration Protocol - To manage domain names</label>
+                    <label><input type="radio" name="q1" value="D"> D) Data Host Control Protocol - To control data packets</label>
+                </div>
+                <div class="explanation" id="explanation-q1">DHCP stands for Dynamic Host Configuration Protocol. Its primary function is to automatically assign IP addresses to devices on a network, simplifying network administration.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">2. Which of these is a private IP address range?</div>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A"> A) 192.168.1.1</label>
+                    <label><input type="radio" name="q2" value="B"> B) 8.8.8.8</label>
+                    <label><input type="radio" name="q2" value="C"> C) 172.32.1.1</label>
+                    <label><input type="radio" name="q2" value="D"> D) 200.100.50.25</label>
+                </div>
+                <div class="explanation" id="explanation-q2">192.168.1.1 is part of the private IP address range (192.168.0.0 to 192.168.255.255). Private IP addresses are used for local area networks and are not routable on the public internet.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">3. A user cannot print. What is the FIRST step you should take?</div>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="A"> A) Reinstall the printer drivers on the user's computer.</label>
+                    <label><input type="radio" name="q3" value="B"> B) Ask the user to restart their computer.</label>
+                    <label><input type="radio" name="q3" value="C"> C) Have the user check if the printer is turned on and has paper.</label>
+                    <label><input type="radio" name="q3" value="D"> D) Check the print queue on the print server.</label>
+                </div>
+                <div class="explanation" id="explanation-q3">Always start with the simplest physical checks before moving to software/driver troubleshooting. This is "checking the basics" and often resolves the issue quickly.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">4. What is the primary purpose of DNS?</div>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="A"> A) To provide encryption for web traffic</label>
+                    <label><input type="radio" name="q4" value="B"> B) To translate domain names into IP addresses</label>
+                    <label><input type="radio" name="q4" value="C"> C) To assign IP addresses to network devices</label>
+                    <label><input type="radio" name="q4" value="D"> D) To block malicious websites</label>
+                </div>
+                <div class="explanation" id="explanation-q4">DNS acts like a phonebook for the internet, converting human-readable names (google.com) to machine-readable IP addresses (142.251.42.206).</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">5. In Windows, which tool would you use to check if a network cable is functioning properly on a physical level?</div>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="A"> A) Device Manager</label>
+                    <label><input type="radio" name="q5" value="B"> B) Network and Sharing Center</label>
+                    <label><input type="radio" name="q5" value="C"> C) `ipconfig`</label>
+                    <label><input type="radio" name="q5" value="D"> D) `ping`</label>
+                </div>
+                <div class="explanation" id="explanation-q5">In Windows 10/11, the icon in the system tray would show a red X or warning if the cable is unplugged or faulty. `ping` tests logical connectivity, not the physical cable itself.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">6. What does the "A" in the ITIL service lifecycle term "BYOD" typically stand for?</div>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="A"> A) Application</label>
+                    <label><input type="radio" name="q6" value="B"> B) Access</label>
+                    <label><input type="radio" name="q6" value="C"> C) Your</label>
+                    <label><input type="radio" name="q6" value="D"> D) Asset</label>
+                </div>
+                <div class="explanation" id="explanation-q6">BYOD stands for "Bring Your Own Device." This question checks attention to detail and familiarity with common IT acronyms.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">7. A blue screen of death (BSOD) on a Windows machine typically indicates:</div>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="A"> A) A minor application error</label>
+                    <label><input type="radio" name="q7" value="B"> B) A low-level, critical system error</label>
+                    <label><input type="radio" name="q7" value="C"> C) A virus infection that is easily removable</label>
+                    <label><input type="radio" name="q7" value="D"> D) A problem with the monitor display</label>
+                </div>
+                <div class="explanation" id="explanation-q7">A BSOD is a stop error caused by critical issues like failing hardware or corrupt drivers. It requires immediate attention and troubleshooting.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">8. Which command is used to release and renew a DHCP-assigned IP address from the command prompt?</div>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="A"> A) `ipconfig /release` and `ipconfig /renew`</label>
+                    <label><input type="radio" name="q8" value="B"> B) `ipconfig /flushdns`</label>
+                    <label><input type="radio" name="q8" value="C"> C) `ping -t`</label>
+                    <label><input type="radio" name="q8" value="D"> D) `nslookup`</label>
+                </div>
+                <div class="explanation" id="explanation-q8">This clears the current IP address and requests a new one from the DHCP server. It's a common troubleshooting step for network connectivity issues.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">9. What is the main function of a router in a network?</div>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="A"> A) To connect devices within a single LAN and manage traffic between them using MAC addresses.</label>
+                    <label><input type="radio" name="q9" value="B"> B) To connect different networks together and route traffic between them using IP addresses.</label>
+                    <label><input type="radio" name="q9" value="C"> C) To amplify a wireless signal.</label>
+                    <label><input type="radio" name="q9" value="D"> D) To provide a physical connection for network cables.</label>
+                </div>
+                <div class="explanation" id="explanation-q9">A switch manages traffic within a LAN (using MAC addresses), while a router connects LANs to WANs (like the internet) using IP addresses.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">10. What does VPN stand for?</div>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="A"> A) Virtual Public Network</label>
+                    <label><input type="radio" name="q10" value="B"> B) Verified Private Network</label>
+                    <label><input type="radio" name="q10" value="C"> C) Virtual Private Network</label>
+                    <label><input type="radio" name="q10" value="D"> D) Virtual Proxy Network</label>
+                </div>
+                <div class="explanation" id="explanation-q10">A VPN extends a private network across a public network, allowing for secure remote access to company resources.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">11. Which port is typically used for secure HTTP (HTTPS) traffic?</div>
+                <div class="options">
+                    <label><input type="radio" name="q11" value="A"> A) Port 21</label>
+                    <label><input type="radio" name="q11" value="B"> B) Port 25</label>
+                    <label><input type="radio" name="q11" value="C"> C) Port 80</label>
+                    <label><input type="radio" name="q11" value="D"> D) Port 443</label>
+                </div>
+                <div class="explanation" id="explanation-q11">Port 80 is for unencrypted HTTP. Port 443 is the standard port for HTTPS traffic, which uses SSL/TLS encryption.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">12. In Active Directory, what is a "OU" used for?</div>
+                <div class="options">
+                    <label><input type="radio" name="q12" value="A"> A) Organizing users, computers, and other objects for applying policies.</label>
+                    <label><input type="radio" name="q12" value="B"> B) Overhauling user permissions.</label>
+                    <label><input type="radio" name="q12" value="C"> C) Optimizing universal access.</label>
+                    <label><input type="radio" name="q12" value="D"> D) Overseeing unit tasks.</label>
+                </div>
+                <div class="explanation" id="explanation-q12">An Organizational Unit (OU) is a container in Active Directory used to organize objects and apply Group Policies for management and security purposes.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">13. What is the purpose of the `ping` command?</div>
+                <div class="options">
+                    <label><input type="radio" name="q13" value="A"> A) To test the reachability of a host on an IP network and measure round-trip time.</label>
+                    <label><input type="radio" name="q13" value="B"> B) To configure network interfaces.</label>
+                    <label><input type="radio" name="q13" value="C"> C) To display the routing table.</label>
+                    <label><input type="radio" name="q13" value="D"> D) To trace the path packets take to a destination.</label>
+                </div>
+                <div class="explanation" id="explanation-q13">`ping` sends ICMP packets to a destination and reports if it gets a reply and how long it took. It's a fundamental network troubleshooting tool.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">14. A user reports their computer is running very slowly. What is a likely NON-malware related cause?</div>
+                <div class="options">
+                    <label><input type="radio" name="q14" value="A"> A) High CPU or RAM usage by a legitimate process.</label>
+                    <label><input type="radio" name="q14" value="B"> B) A Trojan horse virus.</label>
+                    <label><input type="radio" name="q14" value="C"> C) A keylogger infection.</label>
+                    <label><input type="radio" name="q14" value="D"> D) A ransomware attack.</label>
+                </div>
+                <div class="explanation" id="explanation-q14">While malware is a common cause, other reasons include too many programs running, a needed reboot, or a resource-intensive process like a Windows update.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">15. RAID 1 is primarily known for:</div>
+                <div class="options">
+                    <label><input type="radio" name="q15" value="A"> A) Striping data across multiple disks for performance.</label>
+                    <label><input type="radio" name="q15" value="B"> B) Mirroring data between two disks for redundancy.</label>
+                    <label><input type="radio" name="q15" value="C"> C) Combining disks into one large volume.</label>
+                    <label><input type="radio" name="q15" value="D"> D) Providing error correction.</label>
+                </div>
+                <div class="explanation" id="explanation-q15">RAID 1 writes identical data to two disks simultaneously, creating a mirror. If one disk fails, the other has a perfect copy, ensuring data redundancy.</div>
+            </div>
+            
+            <h3 class="section-title">Section 2: Troubleshooting & Methodology (10 Questions)</h3>
+            
+            <div class="question">
+                <div class="question-text">16. What is the first step of the general troubleshooting methodology?</div>
+                <div class="options">
+                    <label><input type="radio" name="q16" value="A"> A) Establish a theory of probable cause.</label>
+                    <label><input type="radio" name="q16" value="B"> B) Identify the problem.</label>
+                    <label><input type="radio" name="q16" value="C"> C) Test the theory to determine the cause.</label>
+                    <label><input type="radio" name="q16" value="D"> D) Implement the solution.</label>
+                </div>
+                <div class="explanation" id="explanation-q16">You must fully understand what the problem is before you can attempt to solve it. This involves gathering information and asking clarifying questions.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">17. A user calls and says, "My internet is down." What is the BEST follow-up question?</div>
+                <div class="options">
+                    <label><input type="radio" name="q17" value="A"> A) "Have you tried turning it off and on again?"</label>
+                    <label><input type="radio" name="q17" value="B"> B) "What is the exact error message you are seeing?"</label>
+                    <label><input type="radio" name="q17" value="C"> C) "Is anyone else in your office experiencing the same issue?"</label>
+                    <label><input type="radio" name="q17" value="D"> D) "What is your ticket number?"</label>
+                </div>
+                <div class="explanation" id="explanation-q17">Gathering specific details is crucial for effective troubleshooting. "My internet is down" is vague; it could be the browser, one website, WiFi, etc.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">18. After implementing a solution to a problem, what should you do next?</div>
+                <div class="options">
+                    <label><input type="radio" name="q18" value="A"> A) Close the ticket immediately.</label>
+                    <label><input type="radio" name="q18" value="B"> B) Document the solution and steps taken.</label>
+                    <label><input type="radio" name="q18" value="C"> C) Escalate the ticket to level 2 support.</label>
+                    <label><input type="radio" name="q18" value="D"> D) Verify full system functionality and implement preventive measures.</label>
+                </div>
+                <div class="explanation" id="explanation-q18">You must ensure your fix actually worked and didn't break anything else. Documenting (B) is part of this final step but verification comes first.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">19. You've solved a user's issue. What is the best way to end the call?</div>
+                <div class="options">
+                    <label><input type="radio" name="q19" value="A"> A) "Okay, it's fixed. Bye."</label>
+                    <label><input type="radio" name="q19" value="B"> B) "Is there anything else I can help you with today?"</label>
+                    <label><input type="radio" name="q19" value="C"> C) "Don't hesitate to call again if you have more problems."</label>
+                    <label><input type="radio" name="q19" value="D"> D) "Please hold for a brief survey about my service."</label>
+                </div>
+                <div class="explanation" id="explanation-q19">This is a professional and customer-focused way to conclude an interaction, ensuring all the user's needs are met before ending the call.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">20. What does "escalating a ticket" mean?</div>
+                <div class="options">
+                    <label><input type="radio" name="q20" value="A"> A) Closing the ticket because it's solved.</label>
+                    <label><input type="radio" name="q20" value="B"> B) Transferring the ticket to a higher level of support or different team.</label>
+                    <label><input type="radio" name="q20" value="C"> C) Increasing the priority of the ticket.</label>
+                    <label><input type="radio" name="q20" value="D"> D) Deleting the ticket from the system.</label>
+                </div>
+                <div class="explanation" id="explanation-q20">Escalation happens when the issue is beyond the current support level's scope or expertise. It ensures the ticket gets to the right people for resolution.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">21. When remote troubleshooting, which tool is most commonly used to securely take control of a user's desktop?</div>
+                <div class="options">
+                    <label><input type="radio" name="q21" value="A"> A) Microsoft Excel</label>
+                    <label><input type="radio" name="q21" value="B"> B) A VPN client</label>
+                    <label><input type="radio" name="q21" value="C"> C) Remote Desktop Protocol (RDP) or a support tool like TeamViewer</label>
+                    <label><input type="radio" name="q21" value="D"> D) Command Prompt</label>
+                </div>
+                <div class="explanation" id="explanation-q21">These tools allow an analyst to see and control the user's desktop remotely to diagnose and fix issues directly, providing efficient support.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">22. Why is it important to document the steps taken during troubleshooting?</div>
+                <div class="options">
+                    <label><input type="radio" name="q22" value="A"> A) To prove to your manager that you are working.</label>
+                    <label><input type="radio" name="q22" value="B"> B) To create a knowledge base for future reference and for other analysts.</label>
+                    <label><input type="radio" name="q22" value="C"> C) To bill the client for the time spent.</label>
+                    <label><input type="radio" name="q22" value="D"> D) It is not necessary if the problem is fixed.</label>
+                </div>
+                <div class="explanation" id="explanation-q22">Good documentation saves time and builds a valuable resource for the entire team. It helps in resolving similar issues faster in the future.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">23. A user is frustrated and speaking loudly. What is the best approach?</div>
+                <div class="options">
+                    <label><input type="radio" name="q23" value="A"> A) Speak louder than them to establish control.</label>
+                    <label><input type="radio" name="q23" value="B"> B) Put them on hold indefinitely.</label>
+                    <label><input type="radio" name="q23" value="C"> C) Remain calm, use empathetic language, and focus on solving the problem.</label>
+                    <label><input type="radio" name="q23" value="D"> D) Tell them to call back when they are calmer.</label>
+                </div>
+                <div class="explanation" id="explanation-q23">De-escalation is a key skill. Matching their frustration will only make the situation worse. Staying calm and empathetic helps resolve the issue effectively.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">24. What is "Active Listening" in a service desk context?</div>
+                <div class="options">
+                    <label><input type="radio" name="q24" value="A"> A) Talking quickly to resolve the issue faster.</label>
+                    <label><input type="radio" name="q24" value="B"> B) Focusing fully, understanding, responding, and remembering what the user is saying.</label>
+                    <label><input type="radio" name="q24" value="C"> C) Letting the user talk without interruption.</label>
+                    <label><input type="radio" name="q24" value="D"> D) Agreeing with everything the user says.</label>
+                </div>
+                <div class="explanation" id="explanation-q24">Active listening is about engaged listening, not just hearing. It involves fully concentrating on what is being said rather than just passively hearing the message.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">25. When dealing with a major outage affecting multiple users, what is the priority?</div>
+                <div class="options">
+                    <label><input type="radio" name="q25" value="A"> A) Answer every call individually to log each ticket.</label>
+                    <label><input type="radio" name="q25" value="B"> B) Follow the incident management process, communicate updates, and work on restoration.</label>
+                    <label><input type="radio" name="q25" value="C"> C) Start troubleshooting your own computer first.</label>
+                    <label><input type="radio" name="q25" value="D"> D) Escalate every single ticket that comes in.</label>
+                </div>
+                <div class="explanation" id="explanation-q25">For major incidents, communication and restoration are paramount. Individual ticket logging is secondary to resolving the widespread issue.</div>
+            </div>
+            
+            <h3 class="section-title">Section 3: Customer Service & Soft Skills (10 Questions)</h3>
+            
+            <div class="question">
+                <div class="question-text">26. What is the most important trait of a successful Service Desk Analyst?</div>
+                <div class="options">
+                    <label><input type="radio" name="q26" value="A"> A) Knowing everything about IT.</label>
+                    <label><input type="radio" name="q26" value="B"> B) Exceptional customer service and communication skills.</label>
+                    <label><input type="radio" name="q26" value="C"> C) The ability to work alone without distraction.</label>
+                    <label><input type="radio" name="q26" value="D"> D) Speed in closing tickets.</label>
+                </div>
+                <div class="explanation" id="explanation-q26">Technical skills can be taught, but a strong customer-focused attitude is fundamental for this role. Service desk is as much about people as it is about technology.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">27. A user is explaining a problem you've heard 10 times today. You should:</div>
+                <div class="options">
+                    <label><input type="radio" name="q27" value="A"> A) Interrupt them and tell them you know the solution.</label>
+                    <label><input type="radio" name="q27" value="B"> B) Let them finish explaining and treat their issue as uniquely important.</label>
+                    <label><input type="radio" name="q27" value="C"> C) Transfer them to another agent.</label>
+                    <label><input type="radio" name="q27" value="D"> D) Sigh loudly so they know you're busy.</label>
+                </div>
+                <div class="explanation" id="explanation-q27">Every user deserves respect and your full attention. Making them feel heard is an important part of providing good customer service.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">28. When explaining a technical solution to a non-technical user, you should:</div>
+                <div class="options">
+                    <label><input type="radio" name="q28" value="A"> A) Use complex jargon to demonstrate your expertise.</label>
+                    <label><input type="radio" name="q28" value="B"> B) Use simple, clear language and avoid jargon.</label>
+                    <label><input type="radio" name="q28" value="C"> C) Tell them to google it.</label>
+                    <label><input type="radio" name="q28" value="D"> D) Do it for them without explanation.</label>
+                </div>
+                <div class="explanation" id="explanation-q28">The goal is to be understood, not to impress. Using clear, non-technical language helps the user learn and potentially solve similar issues themselves in the future.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">29. What does SLA stand for?</div>
+                <div class="options">
+                    <label><input type="radio" name="q29" value="A"> A) Service Level Agreement</label>
+                    <label><input type="radio" name="q29" value="B"> B) System Log Analysis</label>
+                    <label><input type="radio" name="q29" value="C"> C) Standard Licensing Agreement</label>
+                    <label><input type="radio" name="q29" value="D"> D) Server Location Access</label>
+                </div>
+                <div class="explanation" id="explanation-q29">An SLA defines the expected level of service between a provider and a customer (e.g., response and resolution times). It's a key component of IT service management.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">30. A caller asks for help with an application you are not familiar with. You should:</div>
+                <div class="options">
+                    <label><input type="radio" name="q30" value="A"> A) Guess the solution to save time.</label>
+                    <label><input type="radio" name="q30" value="B"> B) Tell the user you can't help them and suggest they call the software vendor.</label>
+                    <label><input type="radio" name="q30" value="C"> C) Admit you are not familiar with it, but you will research it or find someone who can help.</label>
+                    <label><input type="radio" name="q30" value="D"> D) Put them on hold and hope they hang up.</label>
+                </div>
+                <div class="explanation" id="explanation-q30">Honesty and a willingness to find a solution are better than providing incorrect information. This approach builds trust with the user.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">31. Effective communication over the phone relies heavily on:</div>
+                <div class="options">
+                    <label><input type="radio" name="q31" value="A"> A) Your typing speed.</label>
+                    <label><input type="radio" name="q31" value="B"> B) Your tone of voice and clarity of speech.</label>
+                    <label><input type="radio" name="q31" value="C"> C) The user's internet speed.</label>
+                    <label><input type="radio" name="q31" value="D"> D) Using technical abbreviations.</label>
+                </div>
+                <div class="explanation" id="explanation-q31">Without visual cues, your voice is your primary tool for communication and building rapport. A friendly, clear tone can significantly improve the customer experience.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">32. Why is it important to set realistic expectations with a user?</div>
+                <div class="options">
+                    <label><input type="radio" name="q32" value="A"> A) To ensure they don't bother you again.</label>
+                    <label><input type="radio" name="q32" value="B"> B) To manage their wait time and avoid frustration.</label>
+                    <label><input type="radio" name="q32" value="C"> C) To make your job easier.</label>
+                    <label><input type="radio" name="q32" value="D"> D) It is not necessary.</label>
+                </div>
+                <div class="explanation" id="explanation-q32">If you say "5 minutes" but it will take an hour, the user will become frustrated. Being honest about timelines manages expectations and avoids dissatisfaction.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">33. What should you do if you make a mistake while helping a user?</div>
+                <div class="options">
+                    <label><input type="radio" name="q33" value="A"> A) Try to hide it and hope they don't notice.</label>
+                    <label><input type="radio" name="q33" value="B"> B) Blame the previous shift.</label>
+                    <label><input type="radio" name="q33" value="C"> C) Acknowledge the mistake, apologize, and focus on correcting it.</label>
+                    <label><input type="radio" name="q33" value="D"> D) Transfer the call to another agent.</label>
+                </div>
+                <div class="explanation" id="explanation-q33">Taking ownership builds trust and shows professionalism. Everyone makes mistakes; how you handle them defines your professionalism.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">34. The phrase "I understand your frustration" is an example of:</div>
+                <div class="options">
+                    <label><input type="radio" name="q34" value="A"> A) Patronizing the user.</label>
+                    <label><input type="radio" name="q34" value="B"> B) Empathy.</label>
+                    <label><input type="radio" name="q34" value="C"> C) Technical support.</label>
+                    <label><input type="radio" name="q34" value="D"> D) Escalation.</label>
+                </div>
+                <div class="explanation" id="explanation-q34">It shows the user you recognize and acknowledge their feelings, which helps build rapport and de-escalate tense situations.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">35. Before transferring a call, you should always:</div>
+                <div class="options">
+                    <label><input type="radio" name="q35" value="A"> A) Get the user's employee ID.</label>
+                    <label><input type="radio" name="q35" value="B"> B) Explain why you are transferring them and to whom.</label>
+                    <label><input type="radio" name="q35" value="C"> C) Put them on hold first and then find the correct person.</label>
+                    <label><input type="radio" name="q35" value="D"> D) Just hit the transfer button.</label>
+                </div>
+                <div class="explanation" id="explanation-q35">This is courteous and prevents the user from feeling dismissed or having to repeat their story from the beginning to the next agent.</div>
+            </div>
+            
+            <h3 class="section-title">Section 4: Processes & Security (5 Questions)</h3>
+            
+            <div class="question">
+                <div class="question-text">36. What is the primary goal of Incident Management?</div>
+                <div class="options">
+                    <label><input type="radio" name="q36" value="A"> A) To find the root cause of all problems.</label>
+                    <label><input type="radio" name="q36" value="B"> B) To restore normal service operation as quickly as possible.</label>
+                    <label><input type="radio" name="q36" value="C"> C) To manage long-term changes to the IT environment.</label>
+                    <label><input type="radio" name="q36" value="D"> D) To purchase new software and hardware.</label>
+                </div>
+                <div class="explanation" id="explanation-q36">Incident Management is reactive. Problem Management is focused on finding the root cause. The immediate goal is restoration of service.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">37. A user calls asking for another user's password. What should you do?</div>
+                <div class="options">
+                    <label><input type="radio" name="q37" value="A"> A) Give it to them if they sound trustworthy.</label>
+                    <label><input type="radio" name="q37" value="B"> B) Reset the password and provide the new one.</label>
+                    <label><input type="radio" name="q37" value="C"> C) Never provide a password; guide them through the official password reset process.</label>
+                    <label><input type="radio" name="q37" value="D"> D) Ask them to send the request via email.</label>
+                </div>
+                <div class="explanation" id="explanation-q37">Sharing passwords is a critical security violation. Always follow the official, secure process for password resets.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">38. What is a "phishing" email?</div>
+                <div class="options">
+                    <label><input type="radio" name="q38" value="A"> A) An email from your boss.</label>
+                    <label><input type="radio" name="q38" value="B"> B) A fraudulent email attempting to steal sensitive information.</label>
+                    <label><input type="radio" name="q38" value="C"> C) An email that is caught by the spam filter.</label>
+                    <label><input type="radio" name="q38" value="D"> D) An email with a large attachment.</label>
+                </div>
+                <div class="explanation" id="explanation-q38">Phishing emails often impersonate legitimate companies to trick users into giving up passwords or financial info. They're a common security threat.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">39. Why should you lock your workstation when you step away from your desk?</div>
+                <div class="options">
+                    <label><input type="radio" name="q39" value="A"> A) To save electricity.</label>
+                    <label><input type="radio" name="q39" value="B"> B) To prevent unauthorized access to sensitive systems and data.</label>
+                    <label><input type="radio" name="q39" value="C"> C) To make your computer run faster.</label>
+                    <label><input type="radio" name="q39" value="D"> D) It is a company policy with no real purpose.</label>
+                </div>
+                <div class="explanation" id="explanation-q39">This is a fundamental security practice known as "clean desk" or "workstation locking" policy. It prevents unauthorized access while you're away.</div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">40. What is the purpose of a Knowledge Base?</div>
+                <div class="options">
+                    <label><input type="radio" name="q40" value="A"> A) To store user passwords securely.</label>
+                    <label><input type="radio" name="q40" value="B"> B) To provide a repository of solutions and documentation for common issues.</label>
+                    <label><input type="radio" name="q40" value="C"> C) To track the time analysts spend on breaks.</label>
+                    <label><input type="radio" name="q40" value="D"> D) To monitor network performance.</label>
+                </div>
+                <div class="explanation" id="explanation-q40">A knowledge base empowers both analysts and users to find solutions quickly, improving efficiency and reducing resolution times for common issues.</div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="submit-btn">Submit Test</button>
+                <button type="button" id="print-btn">Print Results</button>
+                <button type="button" id="reset-btn">Reset Test</button>
+            </div>
+        </form>
+        
+        <div class="results" id="results">
+            <div class="score" id="score"></div>
+            <div id="detailed-results"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quizForm = document.getElementById('quiz-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const printBtn = document.getElementById('print-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const resultsDiv = document.getElementById('results');
+            const scoreDiv = document.getElementById('score');
+            const detailedResultsDiv = document.getElementById('detailed-results');
+            const progressBar = document.getElementById('progress-bar');
+            const progressCount = document.getElementById('progress-count');
+            
+            // Correct answers
+            const correctAnswers = {
+                q1: 'A',
+                q2: 'A',
+                q3: 'C',
+                q4: 'B',
+                q5: 'B',
+                q6: 'C',
+                q7: 'B',
+                q8: 'A',
+                q9: 'B',
+                q10: 'C',
+                q11: 'D',
+                q12: 'A',
+                q13: 'A',
+                q14: 'A',
+                q15: 'B',
+                q16: 'B',
+                q17: 'B',
+                q18: 'D',
+                q19: 'B',
+                q20: 'B',
+                q21: 'C',
+                q22: 'B',
+                q23: 'C',
+                q24: 'B',
+                q25: 'B',
+                q26: 'B',
+                q27: 'B',
+                q28: 'B',
+                q29: 'A',
+                q30: 'C',
+                q31: 'B',
+                q32: 'B',
+                q33: 'C',
+                q34: 'B',
+                q35: 'B',
+                q36: 'B',
+                q37: 'C',
+                q38: 'B',
+                q39: 'B',
+                q40: 'B'
+            };
+            
+            // Track answered questions
+            let answeredCount = 0;
+            
+            // Add event listeners to all radio buttons to track progress
+            const allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Count how many questions have at least one answer
+                    answeredCount = 0;
+                    for (let i = 1; i <= 40; i++) {
+                        if (document.querySelector(`input[name="q${i}"]:checked`)) {
+                            answeredCount++;
+                        }
+                    }
+                    
+                    // Update progress bar and counter
+                    progressCount.textContent = answeredCount;
+                    progressBar.style.width = `${(answeredCount / 40) * 100}%`;
+                });
+            });
+            
+            // Submit button event
+            submitBtn.addEventListener('click', function() {
+                let score = 0;
+                const totalQuestions = Object.keys(correctAnswers).length;
+                let resultsHTML = '';
+                
+                // Check answers and calculate score
+                for (const question in correctAnswers) {
+                    const selectedOption = document.querySelector(`input[name=${question}]:checked`);
+                    const explanationDiv = document.getElementById(`explanation-${question}`);
+                    
+                    if (selectedOption) {
+                        if (selectedOption.value === correctAnswers[question]) {
+                            score++;
+                            explanationDiv.innerHTML = `<span class="correct">Correct!</span> ${explanationDiv.innerHTML}`;
+                            selectedOption.parentElement.classList.add('answer-label');
+                        } else {
+                            explanationDiv.innerHTML = `<span class="incorrect">Incorrect. The correct answer is ${correctAnswers[question]}.</span> ${explanationDiv.innerHTML}`;
+                        }
+                    } else {
+                        explanationDiv.innerHTML = `<span class="incorrect">Not answered. The correct answer is ${correctAnswers[question]}.</span> ${explanationDiv.innerHTML}`;
+                    }
+                    
+                    explanationDiv.style.display = 'block';
+                }
+                
+                // Display score
+                const percentage = (score / totalQuestions) * 100;
+                let scoreClass = 'low-score';
+                if (percentage >= 80) scoreClass = 'high-score';
+                else if (percentage >= 60) scoreClass = 'medium-score';
+                
+                scoreDiv.innerHTML = `Your score: <span class="${scoreClass}">${score}/${totalQuestions} (${percentage.toFixed(1)}%)</span>`;
+                
+                // Add performance feedback
+                let feedback = '';
+                if (percentage >= 80) {
+                    feedback = '<p>Excellent! You have strong knowledge relevant to an IT Service Desk Analyst role.</p>';
+                } else if (percentage >= 60) {
+                    feedback = '<p>Good job! You have a solid foundation but may need to review some areas.</p>';
+                } else {
+                    feedback = '<p>Keep studying! Review the explanations and consider additional preparation.</p>';
+                }
+                
+                scoreDiv.innerHTML += feedback;
+                
+                // Show results and print button
+                resultsDiv.style.display = 'block';
+                printBtn.style.display = 'inline-block';
+                
+                // Scroll to results
+                resultsDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Print button event
+            printBtn.addEventListener('click', function() {
+                window.print();
+            });
+            
+            // Reset button event
+            resetBtn.addEventListener('click', function() {
+                quizForm.reset();
+                const explanationDivs = document.querySelectorAll('.explanation');
+                explanationDivs.forEach(div => {
+                    div.style.display = 'none';
+                });
+                
+                const labels = document.querySelectorAll('.options label');
+                labels.forEach(label => {
+                    label.classList.remove('answer-label');
+                });
+                
+                resultsDiv.style.display = 'none';
+                printBtn.style.display = 'none';
+                scoreDiv.innerHTML = '';
+                detailedResultsDiv.innerHTML = '';
+                
+                // Reset progress
+                answeredCount = 0;
+                progressCount.textContent = '0';
+                progressBar.style.width = '0%';
+            });
+        });
+    </script>
+</body>
+</html>
