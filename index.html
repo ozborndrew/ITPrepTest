@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Security Flashcards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #1a2a6c;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            flex-grow: 1;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(90deg, #1a2a6c, #b21f1f);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #1a2a6c;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            padding: 15px;
+            background-color: #f5f7fb;
+            border: 2px solid #d8e0e9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #e3eaf3;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background-color: #d6e4ff;
+            border-color: #1a2a6c;
+            font-weight: bold;
+        }
+        
+        .option-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: #1a2a6c;
+            color: white;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #prev-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        #prev-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        #next-btn {
+            background-color: #1a2a6c;
+            color: white;
+        }
+        
+        #next-btn:hover {
+            background-color: #0d1b4d;
+            transform: translateY(-2px);
+        }
+        
+        #submit-btn {
+            background-color: #28a745;
+            color: white;
+            display: none;
+        }
+        
+        #submit-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .score {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #1a2a6c;
+            font-weight: bold;
+            padding: 15px;
+            background: linear-gradient(135deg, #e3eaf3, #d6e4ff);
+            border-radius: 10px;
+        }
+        
+        .pass-fail {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .passed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .result-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .result-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #1a2a6c;
+        }
+        
+        .result-answer {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            min-width: 120px;
+        }
+        
+        .result-explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            font-style: italic;
+            border-left: 3px solid #6c757d;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .review-btn, .print-btn {
+            background-color: #1a2a6c;
+            color: white;
+            padding: 12px 30px;
+        }
+        
+        .review-btn:hover, .print-btn:hover {
+            background-color: #0d1b4d;
+            transform: translateY(-2px);
+        }
+        
+        .print-btn {
+            background-color: #6c757d;
+        }
+        
+        .print-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .icon {
+            margin-right: 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .card, .intro, .progress, .footer, .action-buttons {
+                display: none;
+            }
+            
+            .results {
+                display: block;
+                margin-top: 0;
+            }
+            
+            .result-item {
+                page-break-inside: avoid;
+            }
+            
+            .score, .pass-fail {
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-shield-alt icon"></i>Windows Security Flashcards</h1>
+    
+    <div class="container">
+        <div class="intro">
+            <p>Test your knowledge of Windows security threats with these interactive flashcards. Identify the type of attack described in each scenario.</p>
+            <p>Answer all 20 questions, then submit to see your results and review the correct answers with detailed explanations.</p>
+            <p><strong>Passing score: 80% (16 out of 20 correct answers)</strong></p>
+        </div>
+        
+        <div class="progress">
+            <span id="current-question">1</span>
+            <div class="progress-bar">
+                <div class="progress-bar-inner"></div>
+            </div>
+            <span id="total-questions">20</span>
+        </div>
+        
+        <div class="card">
+            <div class="question" id="question">Question will appear here</div>
+            <div class="options" id="options">
+                <!-- Options will be inserted here -->
+            </div>
+            <div class="buttons">
+                <button id="prev-btn"><i class="fas fa-arrow-left"></i>Previous</button>
+                <button id="next-btn">Next<i class="fas fa-arrow-right"></i></button>
+                <button id="submit-btn"><i class="fas fa-paper-plane"></i>Submit Answers</button>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="score" id="score"></div>
+            <div class="pass-fail" id="pass-fail"></div>
+            <div id="results-container"></div>
+            <div class="action-buttons">
+                <button class="review-btn" id="review-btn"><i class="fas fa-redo"></i>Review Incorrect Answers</button>
+                <button class="print-btn" id="print-btn"><i class="fas fa-print"></i>Print Results</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Interactive Windows Security Flashcards | Learn to Identify Cyber Threats</p>
+    </div>
+
+    <script>
+        // Questions data with explanations
+        const questions = [
+            {
+                question: "You receive an email that appears to be from Microsoft support asking for your password to resolve an issue. What type of attack is this?",
+                options: ["Phishing", "Ransomware", "Keylogger", "Trojan Horse"],
+                answer: "Phishing",
+                explanation: "Phishing is a social engineering attack where attackers impersonate legitimate organizations to trick users into revealing sensitive information like passwords or credit card numbers."
+            },
+            {
+                question: "Your files are encrypted and a message demands payment for their release. What type of attack is this?",
+                options: ["Ransomware", "Spyware", "Adware", "Worm"],
+                answer: "Ransomware",
+                explanation: "Ransomware is malware that encrypts files on a victim's system and demands payment (usually in cryptocurrency) in exchange for the decryption key."
+            },
+            {
+                question: "A seemingly legitimate program you installed secretly creates a backdoor for attackers. What is this?",
+                options: ["Trojan Horse", "Virus", "Phishing", "SQL Injection"],
+                answer: "Trojan Horse",
+                explanation: "A Trojan Horse is malware that disguises itself as legitimate software but performs malicious actions, such as creating backdoors, once installed."
+            },
+            {
+                question: "Your computer starts displaying excessive pop-up advertisements even when no browser is open. What type of malware is this?",
+                options: ["Adware", "Ransomware", "Rootkit", "Spyware"],
+                answer: "Adware",
+                explanation: "Adware is software that automatically displays or downloads advertising material such as banners or pop-ups when a user is online."
+            },
+            {
+                question: "A program secretly records every keystroke you make, capturing passwords and credit card numbers. What is this?",
+                options: ["Keylogger", "Worm", "Adware", "Botnet"],
+                answer: "Keylogger",
+                explanation: "A keylogger is surveillance malware that records every keystroke made on a computer, often used to steal sensitive information like login credentials."
+            },
+            {
+                question: "Malicious software gains administrator-level access to your computer and hides its presence. What is this?",
+                options: ["Rootkit", "Trojan Horse", "Spyware", "Logic Bomb"],
+                answer: "Rootkit",
+                explanation: "A rootkit is malware that provides privileged (root-level) access to a computer while actively hiding its presence from normal detection methods."
+            },
+            {
+                question: "Your computer is part of a network of infected devices used to launch large-scale attacks. What is this called?",
+                options: ["Botnet", "Worm", "Virus", "Ransomware"],
+                answer: "Botnet",
+                explanation: "A botnet is a network of private computers infected with malicious software and controlled as a group without the owners' knowledge, often used to launch DDoS attacks."
+            },
+            {
+                question: "A malicious program replicates itself and spreads to other computers without user interaction. What is this?",
+                options: ["Worm", "Virus", "Trojan Horse", "Spyware"],
+                answer: "Worm",
+                explanation: "A computer worm is a standalone malware program that replicates itself to spread to other computers, often exploiting security vulnerabilities."
+            },
+            {
+                question: "Software secretly gathers information about your browsing habits without your consent. What is this?",
+                options: ["Spyware", "Adware", "Ransomware", "Keylogger"],
+                answer: "Spyware",
+                explanation: "Spyware is malware that secretly observes the computer user's activities without permission and reports it to the software's author."
+            },
+            {
+                question: "An attacker intercepts communication between your computer and a website to steal information. What is this?",
+                options: ["Man-in-the-Middle", "Phishing", "DDoS", "SQL Injection"],
+                answer: "Man-in-the-Middle",
+                explanation: "A Man-in-the-Middle (MitM) attack occurs when an attacker secretly intercepts and relays messages between two parties who believe they are directly communicating with each other."
+            },
+            {
+                question: "A website you trust is compromised and used to deliver malicious scripts to your browser. What is this?",
+                options: ["Cross-Site Scripting (XSS)", "SQL Injection", "Phishing", "Zero-day exploit"],
+                answer: "Cross-Site Scripting (XSS)",
+                explanation: "Cross-Site Scripting (XSS) attacks involve injecting malicious scripts into otherwise benign and trusted websites, which then execute in the victim's browser."
+            },
+            {
+                question: "An attacker exploits a vulnerability in software that is unknown to the vendor. What is this called?",
+                options: ["Zero-day exploit", "Worm", "Trojan Horse", "Logic Bomb"],
+                answer: "Zero-day exploit",
+                explanation: "A zero-day exploit attacks a vulnerability that is unknown to the software vendor, giving them zero days to fix it before it's exploited."
+            },
+            {
+                question: "Your computer is flooded with traffic from multiple sources, making it unavailable. What type of attack is this?",
+                options: ["DDoS", "Man-in-the-Middle", "Phishing", "SQL Injection"],
+                answer: "DDoS",
+                explanation: "A Distributed Denial of Service (DDoS) attack overwhelms a system with traffic from multiple sources, rendering it unavailable to legitimate users."
+            },
+            {
+                question: "Malicious code is inserted into a database through vulnerable input fields. What is this?",
+                options: ["SQL Injection", "Cross-Site Scripting", "Phishing", "Keylogger"],
+                answer: "SQL Injection",
+                explanation: "SQL injection attacks involve inserting malicious SQL code into database queries through vulnerable input fields, allowing attackers to manipulate databases."
+            },
+            {
+                question: "A malicious program is triggered by a specific event or condition, such as a date. What is this?",
+                options: ["Logic Bomb", "Worm", "Virus", "Trojan Horse"],
+                answer: "Logic Bomb",
+                explanation: "A logic bomb is a piece of code intentionally inserted into a software system that lies dormant until a specific condition is met, at which point it executes malicious actions."
+            },
+            {
+                question: "An attacker manipulates you into performing actions or revealing confidential information. What is this?",
+                options: ["Social Engineering", "Phishing", "Man-in-the-Middle", "DDoS"],
+                answer: "Social Engineering",
+                explanation: "Social engineering manipulates people into performing actions or divulging confidential information, rather than by breaking technical security measures."
+            },
+            {
+                question: "Malicious code attaches itself to legitimate programs and spreads when those programs run. What is this?",
+                options: ["Virus", "Worm", "Trojan Horse", "Ransomware"],
+                answer: "Virus",
+                explanation: "A computer virus is malware that attaches itself to legitimate programs and replicates when the host program is executed, spreading to other files and systems."
+            },
+            {
+                question: "Attackers exploit vulnerabilities in a network without any prior authorization. What is this called?",
+                options: ["Penetration Testing", "Zero-day exploit", "Ethical Hacking", "White-hat hacking"],
+                answer: "Penetration Testing",
+                explanation: "Penetration testing (or pen testing) is an authorized simulated cyberattack on a computer system, performed to evaluate the security of the system."
+            },
+            {
+                question: "A fraudulent website mimics a legitimate one to trick users into entering credentials. What is this?",
+                options: ["Pharming", "Phishing", "Spoofing", "Man-in-the-Middle"],
+                answer: "Pharming",
+                explanation: "Pharming redirects users from legitimate websites to fraudulent ones without their knowledge, often through DNS hijacking, to steal credentials."
+            },
+            {
+                question: "Malware that specifically targets industrial control systems and critical infrastructure. What is this?",
+                options: ["SCADA attack", "Ransomware", "Botnet", "Logic Bomb"],
+                answer: "SCADA attack",
+                explanation: "SCADA (Supervisory Control and Data Acquisition) attacks target industrial control systems used in critical infrastructure like power grids and manufacturing plants."
+            }
+        ];
+
+        // Initialize variables
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        const totalQuestions = questions.length;
+        const passingScore = 0.8; // 80% required to pass
+
+        // DOM Elements
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const currentQuestionElement = document.getElementById('current-question');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const progressBarInner = document.querySelector('.progress-bar-inner');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsElement = document.getElementById('results');
+        const scoreElement = document.getElementById('score');
+        const passFailElement = document.getElementById('pass-fail');
+        const resultsContainer = document.getElementById('results-container');
+        const reviewBtn = document.getElementById('review-btn');
+        const printBtn = document.getElementById('print-btn');
+
+        // Initialize the quiz
+        function initQuiz() {
+            totalQuestionsElement.textContent = totalQuestions;
+            showQuestion(currentQuestion);
+            updateProgressBar();
+            
+            // Add event listeners
+            printBtn.addEventListener('click', printResults);
+        }
+
+        // Show current question
+        function showQuestion(index) {
+            const question = questions[index];
+            questionElement.textContent = question.question;
+            
+            // Clear previous options
+            optionsElement.innerHTML = '';
+            
+            // Add new options
+            question.options.forEach((option, i) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[index] === option) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.innerHTML = `
+                    <span class="option-number">${i+1}</span>
+                    <span class="option-text">${option}</span>
+                `;
+                optionElement.addEventListener('click', () => selectOption(option));
+                optionsElement.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            currentQuestionElement.textContent = index + 1;
+            prevBtn.style.display = index === 0 ? 'none' : 'block';
+            nextBtn.style.display = index === totalQuestions - 1 ? 'none' : 'block';
+            submitBtn.style.display = index === totalQuestions - 1 ? 'block' : 'none';
+        }
+
+        // Select an option
+        function selectOption(option) {
+            userAnswers[currentQuestion] = option;
+            
+            // Update UI to show selected option
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                if (opt.querySelector('.option-text').textContent === option) {
+                    opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            progressBarInner.style.width = `${progress}%`;
+        }
+
+        // Navigate to next question
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestion < totalQuestions - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                updateProgressBar();
+            }
+        });
+
+        // Navigate to previous question
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+                updateProgressBar();
+            }
+        });
+
+        // Submit answers
+        submitBtn.addEventListener('click', () => {
+            showResults();
+        });
+
+        // Show results
+        function showResults() {
+            let score = 0;
+            resultsContainer.innerHTML = '';
+            
+            questions.forEach((question, index) => {
+                const resultItem = document.createElement('div');
+                
+                if (userAnswers[index] === question.answer) {
+                    score++;
+                    resultItem.classList.add('correct');
+                } else {
+                    resultItem.classList.add('incorrect');
+                }
+                
+                resultItem.innerHTML = `
+                    <div class="result-question">${index + 1}. ${question.question}</div>
+                    <div class="result-answer">
+                        <span class="result-label">Your answer:</span> 
+                        <span>${userAnswers[index] || 'Not answered'}</span>
+                    </div>
+                    <div class="result-answer">
+                        <span class="result-label">Correct answer:</span> 
+                        <span>${question.answer}</span>
+                    </div>
+                    <div class="result-explanation">
+                        <strong>Explanation:</strong> ${question.explanation}
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(resultItem);
+            });
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            scoreElement.innerHTML = `
+                <i class="fas fa-${percentage >= 80 ? 'trophy' : 'graduation-cap'}"></i>
+                You scored ${score} out of ${totalQuestions} (${percentage}%)
+            `;
+            
+            // Display pass/fail message
+            if (percentage >= passingScore * 100) {
+                passFailElement.textContent = "Congratulations! You passed the security awareness test.";
+                passFailElement.className = "pass-fail passed";
+            } else {
+                passFailElement.textContent = "You didn't pass. Please review the material and try again.";
+                passFailElement.className = "pass-fail failed";
+            }
+            
+            document.querySelector('.card').style.display = 'none';
+            resultsElement.style.display = 'block';
+        }
+
+        // Review incorrect answers
+        reviewBtn.addEventListener('click', () => {
+            const incorrectQuestions = [];
+            
+            questions.forEach((question, index) => {
+                if (userAnswers[index] !== question.answer) {
+                    incorrectQuestions.push(index);
+                }
+            });
+            
+            if (incorrectQuestions.length > 0) {
+                currentQuestion = incorrectQuestions[0];
+                resultsElement.style.display = 'none';
+                document.querySelector('.card').style.display = 'block';
+                showQuestion(currentQuestion);
+                updateProgressBar();
+            }
+        });
+
+        // Print results
+        function printResults() {
+            window.print();
+        }
+
+        // Initialize the quiz when page loads
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
