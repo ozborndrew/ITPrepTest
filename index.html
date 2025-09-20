@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows Security Flashcards</title>
+    <title>Cyber Security Prep Test</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -24,7 +24,7 @@
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -33,12 +33,42 @@
             margin-top: 20px;
         }
         
-        h1 {
+        header {
             text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        h1 {
             color: #1a2a6c;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-size: 2.5rem;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .set-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .set-btn {
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .set-btn.active {
+            background-color: #1a2a6c;
+        }
+        
+        .set-btn:hover {
+            transform: translateY(-2px);
         }
         
         .intro {
@@ -181,6 +211,16 @@
             transform: translateY(-2px);
         }
         
+        #reset-btn {
+            background-color: #fd7e14;
+            color: white;
+        }
+        
+        #reset-btn:hover {
+            background-color: #e06e0c;
+            transform: translateY(-2px);
+        }
+        
         .results {
             display: none;
             margin-top: 20px;
@@ -265,15 +305,16 @@
             justify-content: center;
             gap: 15px;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
         
-        .review-btn, .print-btn {
+        .review-btn, .print-btn, .reset-btn {
             background-color: #1a2a6c;
             color: white;
             padding: 12px 30px;
         }
         
-        .review-btn:hover, .print-btn:hover {
+        .review-btn:hover, .print-btn:hover, .reset-btn:hover {
             background-color: #0d1b4d;
             transform: translateY(-2px);
         }
@@ -284,6 +325,14 @@
         
         .print-btn:hover {
             background-color: #5a6268;
+        }
+        
+        .reset-btn {
+            background-color: #fd7e14;
+        }
+        
+        .reset-btn:hover {
+            background-color: #e06e0c;
         }
         
         .footer {
@@ -316,7 +365,7 @@
                 max-width: 100%;
             }
             
-            .card, .intro, .progress, .footer, .action-buttons {
+            .card, .intro, .progress, .footer, .action-buttons, .set-selector {
                 display: none;
             }
             
@@ -336,13 +385,20 @@
     </style>
 </head>
 <body>
-    <h1><i class="fas fa-shield-alt icon"></i>Windows Security Flashcards</h1>
-    
     <div class="container">
+        <header>
+            <h1><i class="fas fa-shield-alt icon"></i>Cyber Security Prep Test</h1>
+            <div class="set-selector">
+                <button class="set-btn active" id="set1-btn">Set 1: Basic Threats</button>
+                <button class="set-btn" id="set2-btn">Set 2: Advanced Threats</button>
+            </div>
+        </header>
+        
         <div class="intro">
-            <p>Test your knowledge of Windows security threats with these interactive flashcards. Identify the type of attack described in each scenario.</p>
+            <p>Test your knowledge of cybersecurity threats with these interactive flashcards. Identify the type of attack described in each scenario.</p>
             <p>Answer all 20 questions, then submit to see your results and review the correct answers with detailed explanations.</p>
             <p><strong>Passing score: 80% (16 out of 20 correct answers)</strong></p>
+            <p><strong>Note:</strong> Answer choices are randomized each time you take the test!</p>
         </div>
         
         <div class="progress">
@@ -362,6 +418,7 @@
                 <button id="prev-btn"><i class="fas fa-arrow-left"></i>Previous</button>
                 <button id="next-btn">Next<i class="fas fa-arrow-right"></i></button>
                 <button id="submit-btn"><i class="fas fa-paper-plane"></i>Submit Answers</button>
+                <button id="reset-btn"><i class="fas fa-sync-alt"></i>Reset Test</button>
             </div>
         </div>
         
@@ -372,17 +429,18 @@
             <div class="action-buttons">
                 <button class="review-btn" id="review-btn"><i class="fas fa-redo"></i>Review Incorrect Answers</button>
                 <button class="print-btn" id="print-btn"><i class="fas fa-print"></i>Print Results</button>
+                <button class="reset-btn" id="reset-results-btn"><i class="fas fa-sync-alt"></i>Take Test Again</button>
             </div>
         </div>
     </div>
     
     <div class="footer">
-        <p>Interactive Windows Security Flashcards | Learn to Identify Cyber Threats</p>
+        <p>Cyber Security Prep Test | Learn to Identify Cyber Threats</p>
     </div>
 
     <script>
-        // Questions data with explanations
-        const questions = [
+        // First set of questions
+        const questionsSet1 = [
             {
                 question: "You receive an email that appears to be from Microsoft support asking for your password to resolve an issue. What type of attack is this?",
                 options: ["Phishing", "Ransomware", "Keylogger", "Trojan Horse"],
@@ -505,10 +563,136 @@
             }
         ];
 
+        // Second set of questions
+        const questionsSet2 = [
+            {
+                question: "You receive a text message claiming to be from your bank, asking you to verify your account details by clicking a link. What is this?",
+                options: ["Smishing", "Phishing", "Vishing", "Spam"],
+                answer: "Smishing",
+                explanation: "Smishing (SMS phishing) is a type of phishing attack that uses text messages to trick victims into revealing personal information or installing malware."
+            },
+            {
+                question: "A pop-up appears claiming your computer is infected and offers a free scan. When you agree, it installs malicious software. What is this?",
+                options: ["Scareware", "Ransomware", "Adware", "Spyware"],
+                answer: "Scareware",
+                explanation: "Scareware uses fear tactics to trick users into downloading and installing malicious software by claiming their system is infected or compromised."
+            },
+            {
+                question: "Your web browser's homepage suddenly changed to a unfamiliar search engine without your permission. What type of malware likely caused this?",
+                options: ["Browser Hijacker", "Rootkit", "Trojan", "Worm"],
+                answer: "Browser Hijacker",
+                explanation: "Browser hijackers modify browser settings without user permission, often changing the homepage, default search engine, or installing unwanted toolbars."
+            },
+            {
+                question: "You receive a phone call from someone claiming to be from Microsoft Support, saying your computer has viruses and requesting remote access. What is this?",
+                options: ["Tech Support Scam", "Phishing", "Vishing", "Social Engineering"],
+                answer: "Tech Support Scam",
+                explanation: "Tech support scams involve fraudsters pretending to be technical support representatives to gain remote access to computers or extract payment for unnecessary services."
+            },
+            {
+                question: "An email appears to be from your boss asking you to purchase gift cards for client gifts. The email address looks similar but not identical to your boss's. What is this?",
+                options: ["Business Email Compromise", "Phishing", "CEO Fraud", "Whaling"],
+                answer: "Business Email Compromise",
+                explanation: "Business Email Compromise (BEC) targets employees with access to company finances through spoofed or compromised email accounts to authorize fraudulent transactions."
+            },
+            {
+                question: "Your computer's DNS settings were changed without your knowledge, redirecting you to fraudulent websites. What type of attack is this?",
+                options: ["DNS Poisoning", "Pharming", "Man-in-the-Middle", "DNS Spoofing"],
+                answer: "DNS Poisoning",
+                explanation: "DNS poisoning (or DNS cache poisoning) corrupts DNS data to redirect traffic to malicious websites, often for phishing or malware distribution."
+            },
+            {
+                question: "A program secretly uses your computer's resources to mine cryptocurrency without your knowledge. What is this called?",
+                options: ["Cryptojacking", "Botnet", "Spyware", "Ransomware"],
+                answer: "Cryptojacking",
+                explanation: "Cryptojacking involves unauthorized use of someone's computer to mine cryptocurrency, often slowing down the system and increasing energy consumption."
+            },
+            {
+                question: "You insert a USB drive you found in the parking lot into your computer, and it automatically installs malware. What is this attack called?",
+                options: ["USB Drop Attack", "Baiting", "Physical Intrusion", "Hardware Trojan"],
+                answer: "USB Drop Attack",
+                explanation: "USB drop attacks involve leaving infected USB drives in public places where potential victims might find them and plug them into their computers."
+            },
+            {
+                question: "An attacker gains access to your wireless network by posing as a legitimate network with a similar name. What is this?",
+                options: ["Evil Twin Attack", "Spoofing", "Rogue Access Point", "WiFi Phishing"],
+                answer: "Evil Twin Attack",
+                explanation: "An evil twin attack sets up a fraudulent WiFi access point that mimics a legitimate one to intercept user data and credentials."
+            },
+            {
+                question: "Malware encrypts your files and demands payment, but you discover it doesn't actually encrypt anything. What is this called?",
+                options: ["Scareware Ransomware", "Fake Ransomware", "Bluffware", "Rogueware"],
+                answer: "Scareware Ransomware",
+                explanation: "Scareware ransomware displays fake warnings about encrypted files and demands payment, but doesn't actually encrypt anything, relying on fear instead."
+            },
+            {
+                question: "An email contains an image that, when viewed, reports back to the sender that your email address is valid. What is this?",
+                options: ["Email Tracking", "Pixel Tracking", "Read Receipt Exploit", "Web Bug"],
+                answer: "Email Tracking",
+                explanation: "Email tracking uses invisible images (web beacons) in emails to detect when a message has been opened and verify that an email address is active."
+            },
+            {
+                question: "Your computer automatically connects to a malicious Bluetooth device that extracts your data without your knowledge. What is this?",
+                options: ["Bluesnarfing", "Bluejacking", "Bluetooth Hijacking", "Wireless Eavesdropping"],
+                answer: "Bluesnarfing",
+                explanation: "Bluesnarfing is the unauthorized access of information from a wireless device through a Bluetooth connection, often without the victim's knowledge."
+            },
+            {
+                question: "A website uses your browser's vulnerabilities to download malware without your interaction. What is this called?",
+                options: ["Drive-by Download", "Auto-execute Exploit", "Silent Installation", "Clickless Attack"],
+                answer: "Drive-by Download",
+                explanation: "Drive-by downloads automatically download malicious code to a user's device when they visit a compromised website, without requiring any interaction."
+            },
+            {
+                question: "An attacker intercepts your network traffic and creates a fake SSL certificate to make their site appear secure. What is this?",
+                options: ["SSL Stripping", "HTTPS Spoofing", "Certificate Spoofing", "SSL Hijacking"],
+                answer: "SSL Stripping",
+                explanation: "SSL stripping (or SSL downgrade attacks) intercepts communication between a user and a server to replace HTTPS connections with HTTP, making traffic vulnerable."
+            },
+            {
+                question: "Malware infects your computer's master boot record, making it difficult to detect and remove. What is this?",
+                options: ["Bootkit", "Rootkit", "Firmware Malware", "MBR Virus"],
+                answer: "Bootkit",
+                explanation: "A bootkit is malware that infects the master boot record (MBR) or other boot sectors, allowing it to load before the operating system and evade detection."
+            },
+            {
+                question: "An attacker uses previously leaked password data to gain access to your accounts because you reused passwords. What is this called?",
+                options: ["Credential Stuffing", "Password Spraying", "Brute Force Attack", "Dictionary Attack"],
+                answer: "Credential Stuffing",
+                explanation: "Credential stuffing uses username/password pairs from previous data breaches to gain unauthorized access to user accounts on other services."
+            },
+            {
+                question: "A malicious advertisement on a legitimate website redirects you to a site that tries to install malware. What is this?",
+                options: ["Malvertising", "Adware", "Clickjacking", "Ad Hijacking"],
+                answer: "Malvertising",
+                explanation: "Malvertising (malicious advertising) involves embedding malware in online advertisements, which can infect users even on legitimate websites."
+            },
+            {
+                question: "An attacker creates a fake social media profile to befriend you and eventually ask for money or information. What is this?",
+                options: ["Catfishing", "Social Engineering", "Impersonation", "Identity Theft"],
+                answer: "Catfishing",
+                explanation: "Catfishing involves creating a fake online identity to deceive people, often for financial gain, harassment, or extracting personal information."
+            },
+            {
+                question: "Your smartphone receives a message with a link that, when clicked, installs malware that can read your two-factor authentication codes. What is this?",
+                options: ["SIM Jacking", "Mobile Malware", "2FA Bypass", "OTP Interception"],
+                answer: "Mobile Malware",
+                explanation: "Mobile malware specifically targets mobile devices, often through malicious links or apps, and can compromise security features like 2FA."
+            },
+            {
+                question: "An attacker gains physical access to your computer and installs a hardware device to capture keystrokes. What is this?",
+                options: ["Hardware Keylogger", "USB Sniffer", "Physical Key Interceptor", "Keystroke Capturer"],
+                answer: "Hardware Keylogger",
+                explanation: "A hardware keylogger is a physical device inserted between a keyboard and computer that records all keystrokes, capturing passwords and other sensitive data."
+            }
+        ];
+
         // Initialize variables
+        let currentSet = 1;
+        let questions = [];
         let currentQuestion = 0;
-        let userAnswers = new Array(questions.length).fill(null);
-        const totalQuestions = questions.length;
+        let userAnswers = [];
+        const totalQuestions = 20;
         const passingScore = 0.8; // 80% required to pass
 
         // DOM Elements
@@ -520,18 +704,52 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         const submitBtn = document.getElementById('submit-btn');
+        const resetBtn = document.getElementById('reset-btn');
         const resultsElement = document.getElementById('results');
         const scoreElement = document.getElementById('score');
         const passFailElement = document.getElementById('pass-fail');
         const resultsContainer = document.getElementById('results-container');
         const reviewBtn = document.getElementById('review-btn');
         const printBtn = document.getElementById('print-btn');
+        const resetResultsBtn = document.getElementById('reset-results-btn');
+        const set1Btn = document.getElementById('set1-btn');
+        const set2Btn = document.getElementById('set2-btn');
 
-        // Initialize the quiz
+        // Function to shuffle array (Fisher-Yates algorithm)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Initialize the quiz with randomized answers
         function initQuiz() {
+            // Select the appropriate question set
+            const selectedSet = currentSet === 1 ? questionsSet1 : questionsSet2;
+            
+            // Reset questions with randomized options
+            questions = selectedSet.map(q => {
+                return {
+                    question: q.question,
+                    options: shuffleArray([...q.options]),
+                    answer: q.answer,
+                    explanation: q.explanation
+                };
+            });
+            
+            // Reset user answers and current question
+            userAnswers = new Array(totalQuestions).fill(null);
+            currentQuestion = 0;
+            
             totalQuestionsElement.textContent = totalQuestions;
             showQuestion(currentQuestion);
             updateProgressBar();
+            
+            // Hide results, show quiz
+            resultsElement.style.display = 'none';
+            document.querySelector('.card').style.display = 'block';
             
             // Add event listeners
             printBtn.addEventListener('click', printResults);
@@ -609,6 +827,32 @@
         // Submit answers
         submitBtn.addEventListener('click', () => {
             showResults();
+        });
+
+        // Reset the test
+        resetBtn.addEventListener('click', () => {
+            initQuiz();
+        });
+
+        // Reset from results screen
+        resetResultsBtn.addEventListener('click', () => {
+            initQuiz();
+        });
+
+        // Switch to set 1
+        set1Btn.addEventListener('click', () => {
+            currentSet = 1;
+            set1Btn.classList.add('active');
+            set2Btn.classList.remove('active');
+            initQuiz();
+        });
+
+        // Switch to set 2
+        set2Btn.addEventListener('click', () => {
+            currentSet = 2;
+            set2Btn.classList.add('active');
+            set1Btn.classList.remove('active');
+            initQuiz();
         });
 
         // Show results
